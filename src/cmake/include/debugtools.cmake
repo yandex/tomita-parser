@@ -1,0 +1,13 @@
+MACRO (DBG_ALL_DEP_DIRS)
+    PROP_CURDIR_GET(__dep_dirs_ DEPENDENT_DIRECTORIES)
+    LIST(SORT __dep_dirs_)
+    JOIN("${__dep_dirs_}" "\n" __output_)
+    IF(WIN32)
+        SET(__home_dir_ $ENV{USERPROFILE})
+    ELSE ()
+        SET(__home_dir_ $ENV{HOME})
+    ENDIF ()
+    FILE(WRITE ${__home_dir_}/dbg_all_dep_dirs.txt "${__output_}")
+    MESSAGE(FATAL_ERROR "DBG_ALL_DEP_DIRS SUCCESSFULLY COMPLIETED")
+ENDMACRO ()
+

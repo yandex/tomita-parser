@@ -1,0 +1,31 @@
+package NFactType;
+
+import "contrib/libs/protobuf/descriptor.proto";
+
+enum ECapitalization {
+    NONE = 0;
+    TITLE_CASE = 1;     // [h-reg1]
+    UPPER_CASE = 2;     // [h-reg2]
+    CAMEL_CASE = 3;     // [h-reg3]
+};
+
+extend google.protobuf.FieldOptions {
+  optional ECapitalization normcase = 50820;    // h-regX
+  optional bool info = 50821;               // save text info
+}
+
+
+
+// a base fact type
+message TFact {
+    extensions 1 to max;
+}
+
+// fio field
+message TFio {}
+
+// date field
+message TDate {}
+
+
+

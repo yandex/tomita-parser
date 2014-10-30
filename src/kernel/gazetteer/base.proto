@@ -1,0 +1,309 @@
+//Base proto definitions of gazetteer.
+
+// This file is always built into gazetteer, so you don't need to copy it to your location.
+// But anyway you are still required to do explicit import of it when you use any type or name defined here.
+// This is done with following statement (the path to base.proto is not specified):
+//
+//    import "base.proto";
+//
+
+
+import "contrib/libs/protobuf/descriptor.proto";
+
+// Derivation syntax option
+extend google.protobuf.MessageOptions {
+    // A fully qualified name of base message type
+    optional string GztProtoDerivedFrom = 73725;
+}
+
+
+
+
+message TMorphMatchRule {
+    enum EType {
+        EXACT_FORM = 0;         // The key matched exactly as its written.
+
+        ALL_FORMS = 1;          // The key is treated as lemma and each its morphologic form gives a match
+
+        ALL_LEMMA_FORMS = 2;    // The key is lemmatized and for each its lemma all possible forms will be a match.
+                                // To avoid unexpected non-russian lemmas, only russian morphology is used with this option.
+                                // If you need other languages, use ALL_FORMS with excplicit lemmas.
+    }
+    required EType type = 1;
+    repeated uint32 word = 2;   // default - all words
+}
+
+
+
+// all filters below are used as follows:
+// 1. all ALLOW items joined, all FORBID items joined
+// 2. if an input item is listed in ALLOW items or ALLOW items are empty then this input item proceeds to next step
+// 3. next, if the item being checked is in FORBID list - it is skipped (so FORBID has higher priority then ALLOW)
+// 4. item proceeded to this step is accepted.
+
+
+
+message TCapitalizationFilter {
+    enum ECapitalization {
+        ANY = 0;            // default
+        EXACT = 1;
+
+        LOWER = 2;          // abra kadabra
+        UPPER = 3;          // ABRA KADABRA
+        TITLE = 4;          // Abra Kadabra
+    }
+
+    repeated ECapitalization allow = 1;
+    repeated ECapitalization forbid = 2;      //forbid has higher priority than allow
+    repeated uint32 word = 3;
+}
+
+message TGrammemSet {
+    repeated string g = 1;                    // comma-separated sequences of grammems, e.g. "S,муж,им"
+}
+
+message TGrammemsFilter {
+    repeated TGrammemSet allow = 1;       
+    repeated TGrammemSet forbid = 2;
+    repeated uint32 word = 3;
+}
+
+
+message TGleicheFilter {
+    enum EType {
+        CASE = 1;
+        GENDER = 2;
+        NUMBER = 3;
+        TENSE = 4;
+        PERSON = 5;
+
+        SUBJECT_PREDICATE = 6;
+        GENDER_NUMBER_CASE = 7;
+        NUMBER_CASE = 8;
+        GENDER_NUMBER = 9;
+        GENDER_CASE = 10;
+        FEM_CASE = 11;
+
+
+        // special agreement type - generalized check that all common grammems categories (if any) have non-empty intersections
+        //AUTO = 100;
+
+
+        // aliases - tag numbers selected to conform to simple rule:  <orig_tag> = <alias_tag> % 100
+
+        c_agr = 101;
+        g_agr = 102;
+        n_agr = 103;
+        t_agr = 104;
+        p_agr = 105;
+        sp_agr = 106;
+        gnc_agr = 107;
+        nc_agr = 108;
+        gn_agr = 109;
+        gc_agr = 110;
+        fem_c_agr = 111;
+        
+    }
+    repeated EType type = 1;
+    repeated uint32 word = 2;            // default - check an agreement between all (!) words
+}
+
+message TLanguageFilter {
+    enum ELang {
+        // all numeric tags here must be equal to corresponding
+        // docLanguage enum members (see arcadia/util/charset/doccodes.h)
+        UNK = 0;
+        RUS = 1;    // LANG_RUS
+        ENG = 2;    // LANG_ENG
+        POL = 3;
+        HUN = 4;
+        UKR = 5;    // LANG_UKR
+        GER = 6;
+        FRN = 7;
+        TAT = 8;
+        BLR = 9;
+        KAZ = 10;
+        ALB = 11;
+        SPA = 12;
+        ITA = 13; // Italian
+        ARM = 14; // Armenian
+        DAN = 15; // Danish
+        POR = 16; // Portuguese
+        //LANG_UNSET_17 = 17, // missed language: use it for new languages before adding them to the end of the list
+        SLO = 18; // Slovak
+        SLV = 19; // Slovene
+        DUT = 20; // Dutch (Netherlandish language)
+        BUL = 21; // Bulgarian
+        CAT = 22; // Catalan
+        HRV = 23; // Croatian
+        CZE = 24; // Czech
+        GRE = 25; // Greek
+        HEB = 26; // Hebrew
+        NOR = 27; // Norwegian
+        MAC = 28; // Macedonian
+        SWE = 29; // Swedish
+        KOR = 30; // Korean
+        LAT = 31; // Latin
+        BASIC_RUS = 32; // Simplified version of Russian (used at lemmer only)
+        //LANG_UNSET_33 = 33, // missed language: use it for new languages before adding them to the end of the list
+        //LANG_UNSET_34 = 34, // missed language: use it for new languages before adding them to the end of the list
+        //LANG_EMPTY = 35, // Indicate what document is empty
+        //LANG_UNK_LAT = 36, // Any unrecognized latin language
+        //LANG_UNK_CYR = 37, // Any unrecognized cyrillic language
+        //LANG_UNK_ALPHA = 38, // Any unrecognized alphabetic language not fit into previous categories
+        FIN = 39; // Finnish
+        EST = 40; // Estonian
+        LAV = 41; // Latvian
+        LIT = 42; // Lithuanian
+        BAK = 43; // Bashkir
+        TUR = 44; // Turkish
+        RUM = 45; // Romanian (also Moldavian)
+        MON = 46; // Mongolian
+        UZB = 47; // Uzbek
+        KIR = 48; // Kirghiz
+        TGK = 49; // Tajik
+        TUK = 50; // Turkmen
+        SRP = 51; // Serbian
+        AZE = 52; // Azerbaijani
+        BASIC_ENG = 53; // Simplified version of English (used at lemmer only)
+        GEO = 54; // Georgian
+        ARA = 55; // Arabic
+        PER = 56; // Persian
+    }
+
+    repeated ELang allow = 1;
+    repeated ELang forbid = 2;           //forbid has higher priority than allow
+    repeated uint32 word = 3;            // default - all words
+}
+
+
+message TTokenizeOptions {
+	enum EType {
+		WHITE_SPACE = 0;	// default
+		
+		// for next types of tokenization a variant with delimiting spaces is generated automatically,
+		// e.g. for key "a-b-c" will also be added an additional key "a b c" (so it will be found in both cases of input tokenization).
+				
+		NON_ALNUM   = 1;	// tokens are separated with a sequence of non-alnum characters:
+							// "1, 2&+3" -> "1", "2", "3"
+		
+		CHAR_CLASS  = 2;	// a new token starts if a character class differs from previous character class:							
+							// "1dx44::4" -> "1", "dx", "44", "4" (non-alnum tokens are skipped, as "::" in this example).
+	}
+	
+	optional EType delim = 1 [default = WHITE_SPACE];
+}
+
+
+message TSearchKey {
+    // Main search-term class, every non-abstract article should contain a field of this type to be searchable
+    // (otherwise it would not be included in search trie and could not be searched for).
+
+    repeated string text = 1;       // Every @text item could have several space-separated words, e.g. "General Motors"
+                                    // An article will be found only if input contains all this words sequentially (like operator &&)
+
+                                    // When there are several @text fields (repeated), an article will be found on any @text occurence
+                                    // in input (like operator ||)
+
+    repeated TMorphMatchRule morph = 2;       // Morph extension (and @text matching) patterns
+                                              // default means that all words of @text treated as lemmas
+                                              // and every their wordform in proper position gives a match.
+                                              
+
+    repeated TGrammemsFilter gram = 3;        // allowed/forbidden grammems combinations (default = all allowed)    
+    repeated TCapitalizationFilter case = 4;  // allowed/forbidden capitalizations (default = all allowed)
+    
+    repeated TGleicheFilter agr = 5;          //allowed agreements (default = agreement not checked)
+
+
+    // identify the meaning of field @text content:
+    enum EKeyContent {
+        KEY = 1;    // the contained string is literally a text to search (default)
+        FILE = 2;   // @text contains path to text-file with keys - each non-empty line is a key
+        CUSTOM = 3; // any customized key which should be parsed by user explicitly.
+    }
+
+    optional EKeyContent type = 6 [default = KEY];
+
+    repeated TLanguageFilter lang = 7;            // Filter lemmas by their language when set.
+                                                  // Do not applied for words with morph = EXACT_FORM.
+                                                  // Default - do not make any language checks.
+                                                  
+	optional TTokenizeOptions tokenize = 8;		  // tokenization of a key, default is a whitespace delimited tokens;
+}
+
+
+message TRef {
+    // For referencing other articles.
+
+    optional fixed32 id = 1;    // Holds a kind of ID allowing to find referred object in pool of all objects.
+                                // It could be an index in vector or an offset in memory,
+                                // a correct interpretation is defined by context of processing.
+                                // It is important that this field has fixed size as it could be changed
+                                // and entire message ByteSize() will not change. This property is
+                                // used on serialization.
+
+    // used as follows:
+
+    //   message TCity {
+    //       required TRef country = 1;
+    //   }
+    //
+    //   TCountry Russia {};       //referred object
+    //   TCity Irkutsk { country = Russia }; // refers to object 'Russia'
+    //   TCity Moscow { country = Russia };
+
+    // in this case both 'Irkutsk' and 'Moscow' objects will have a link to same 'Russia' object,
+    // not embedded in as inner message (i.e. only one copy of 'Russia' will be created).
+
+}
+
+
+// Base article class - contains only a key, to avoid writing it manually in user-defined classes
+message TArticle {
+    repeated TSearchKey key = 1;
+    extensions 2 to max;
+}
+
+// An article of this type is treated as current gzt file level options.
+// These options are propagated to all imported files by default (see Propagate below)
+message TGztOptions {
+
+    // Default values for corresponding search-keys fields in all defined articles,
+    // if not specified explicitly. For example, if a 'morph' option here in TGztOptions.DefaultKey
+    // is set to EXACT_FORM, default behaviour for all articles in containing gzt will be
+    //  to search them by exact keys texts, instead of lemmas texts (default "default").
+    optional TSearchKey DefaultKey = 1;
+
+    // When false, all article titles will be stripped out of gzt binary after compilation.
+    // This may significantly reduce its size. This is same as deprecated "strip-names" option.
+    optional bool StoreArticleTitles = 2 [default = true];
+
+
+    // When a wild card option is off (false) its corresponding marker character will be simply
+    // treated as part of key text, otherwise it is processed in special way.
+    message TWildCardOptions {
+        // '!' in the beginning of a keyword identifies that a following word should be search by exact form only
+        optional bool ExactForm = 1 [default = true];
+
+        // '$' in the beginning of a keyword creates a key reference to article with specified title,
+        // e.g. a key "moscow $city_descr" will be found in any input sequence
+        // where article "city_descr" is found with a word "moscow" before.
+        // The referred article should be already defined somewhere above in current gazetteer.
+        optional bool ArticleSubst = 2 [default = true];
+
+        // '*' will denote any single word (i.e. a single word with any text can be
+        // on corresponding position of an input sequence during key matching).
+        // This options should be used very carefully as it degrades overall gazetteer search performance.
+        // Default is off!
+        optional bool AnyWord = 3 [default = false];
+    }
+
+    optional TWildCardOptions WildCards = 3;
+
+
+
+    // When true (default) all imported (child) gzt's will have the same global options by default.
+    // An imported gzt can still override propagated options by declaring its own TGztOptions.
+    optional bool Propagate = 100 [default = true];
+}

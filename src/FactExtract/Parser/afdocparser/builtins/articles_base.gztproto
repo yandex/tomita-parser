@@ -1,0 +1,75 @@
+// base auxdic definitions
+
+import "kernel/gazetteer/base.proto";
+
+
+message TLemmaInfo {
+    optional string text = 1;
+    optional uint32 mainword = 2 [default = 1];
+    optional bool always = 3 [default = false];
+    optional bool indeclinable = 4 [default = false];
+    optional TGrammemSet outgram = 5;
+}
+
+message TAuxDicArticle: TArticle
+{
+    optional uint32 mainword = 2 [default = 1];     // main word of original key text
+    optional TLemmaInfo lemma = 3;                  // normalization info
+    optional bool light_kw = 4 [default = false];   // À≈√ Œ≈_ —
+    extensions 10 to max;
+}
+
+message TTaggerArticle: TArticle
+{
+    // a file with tagger compositions is specified within a key, using type=CUSTOM syntax, e.g.:
+    // key = { "tagger:geo.tag.bin" type=CUSTOM }
+
+    repeated string UsedKwtype = 3; // all necessary kwtypes, used during learning/classification stages.
+    repeated string Kernel = 4;     // filter: only words with these kwtypes are candidates for tagging.
+
+    extensions 10 to max;
+}
+
+message TSurnameLemmaModel
+{
+  required TSearchKey key = 1;
+  required string suffix = 2;
+  required float  weight = 3;
+
+  message TSurnameForm {
+    required string suffix = 1;
+    required string gram = 2;
+  }
+
+  repeated TSurnameForm form = 4;
+}
+
+message TNameThesaurusEntry
+{
+    required TSearchKey key = 1;
+    required string name = 2;
+    repeated string diminutive = 3;
+    repeated string patronymicMasc = 4;
+    repeated string patronymicFemn = 5;
+}
+
+message TExtensionList
+{
+    required TSearchKey key = 1;
+    repeated string item = 2;
+}
+
+enum ETypeOfAbbrev
+{
+    Standard = 0;    // 0 - Standard EOS processing
+    NewerEOS = 1;    // 1 - Newer can be EOS
+    DigitEOS = 2;   // 2 - If next is Digit - no EOS
+}
+
+message TAbbreviation
+{
+    required TSearchKey key = 1;
+    required string text = 2;
+    required ETypeOfAbbrev type = 3;
+}
+

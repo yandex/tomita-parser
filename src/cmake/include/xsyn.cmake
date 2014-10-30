@@ -1,0 +1,17 @@
+MACRO (XSYN srcfile dstfile)
+    SET(__usexmlns_ dontuse)
+    FOREACH (__arg_ ${ARGN})
+        IF ("${__arg_}" STREQUAL "USEXMLNS")
+            SET(__usexmlns_ use)
+        ENDIF ()
+    ENDFOREACH ()
+    GET_SRC_ABS_PATH(__srcfile_ ${srcfile})
+    GET_BIN_ABS_PATH(__dstfile_ ${dstfile})
+
+    SET(srcfile2 ${ARCADIA_ROOT}/library/xml/parslib/xmlpars.xh)
+
+    PYTHON(${ARCADIA_ROOT}/library/xml/parslib/xsyn2ragel.py ${__srcfile_} ${srcfile2} ${__usexmlns_} IN ${__srcfile_} ${srcfile2} STDOUT ${__dstfile_}.rl5)
+    SOURCE_GROUP("Custom Builds" FILES ${__srcfile_})
+    SOURCE_GROUP("Generated" FILES ${__dstfile_})
+    BUILDWITH_RAGEL(${__dstfile_}.rl5 ${__dstfile_})
+ENDMACRO ()

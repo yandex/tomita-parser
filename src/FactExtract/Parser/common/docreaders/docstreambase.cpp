@@ -1,0 +1,2 @@
+#include "docstreambase.h"
+

@@ -1,0 +1,214 @@
+//Tomita grammar syntax description
+package NTomita;
+
+// Describes a complete .cxx (.tom) file, containing tomita grammar
+message TFileProto {
+    optional string Name = 1;           // File name, relative to root of source tree        
+    repeated string Include = 2;        // Names of files #included into this file, e.g. '#include <abc.cxx>' or '#include "abc.xxx"'
+    repeated TFilterProto Filter = 3;   // #filter &Word<kwtype=фильтры_для_вуз_словари,gram='ед'>
+    repeated TRuleProto Rule = 4;
+
+    // Encoding of current file (important for string literals and article identifiers), e.g.
+    // #encoding "utf-8"
+    optional string Encoding = 5;
+       
+    repeated string ExtraKeyword = 6;   // #GRAMMAR_KWSET [fio,fdo_chain,date,date_chain,fio_without_surname], could be non-ASCII, encoded to UTF8
+    optional string GrammarRoot = 7;    // #GRAMMAR_ROOT XRoot
+    optional bool NoInterp = 8;         // #NO_INTERPRETATION
+    optional uint32 FioLimit = 9;       // #10_FIOS_LIMIT, or #FIO_LIMIT 10; default 0 means no limit
+    
+    optional bool Debug = 10;			// #DEBUG - prints final set of rules to Clog during compilation
+}
+
+
+
+// Describes a filter, e.g.
+// #filter &Word<kwtype=abbrev> [10] &LBracket  [1] &Word<kwtype=none, h-reg1>  [2] &RBracket
+message TFilterProto {
+    repeated TFilterItemProto Item = 1;
+    optional TFileLocation Location = 2;
+}
+
+message TFilterItemProto {
+    required TTermProto Term = 1;
+	optional uint32 Distance = 2 [default = 1000];
+}
+
+message TRuleProto {
+	required string Name = 1;			// left part - name of a non-terminal
+	repeated TRuleItemProto Item = 2;	// right part terminals and non-terminals
+	optional TRuleInfoProto Info = 3;   // e.g. { outgram = '...' }
+
+    optional TFileLocation Location = 5;
+}
+
+// position of some object in input text, recorded from Tokenizer
+message TFileLocation {
+	optional string File = 1;
+		
+    optional uint32 Line = 2;      // both zero-based
+    optional uint32 Column = 3;
+    
+}
+
+message TRuleItemProto {
+	required TTermProto Term = 1;
+	repeated TInterpProto Interp = 2;
+	optional string Replace = 3;		// A-> Word<kwtype=pres_time> : "1\31d"; (special syntax from src-date.cxx)
+		
+	// Kleene operators '*', '+', '!' with possible following agreement, e.g. [gnc-agr]
+	enum EOption {
+		SINGLE = 0;
+		PARENTH = 1;	// () - none or single
+		STAR = 2;		// *  - none or any number
+		PLUS = 3;		// +  - one or more
+	}
+
+	optional EOption Option = 4;
+	optional EAgrType Agr = 5;
+	optional bool Coord = 6;		// special sim-conj coordination (marked with '!' postfix operator)
+}
+
+message TRuleInfoProto {
+	optional string Outgram = 1;				// outgram='мн', stored as bytes (TGramBitSet::ToBytes())
+	optional float Weight = 2 [default = 1];	// weight=0.99
+	optional uint32 Count = 3 [default = 1000];	// count=10 - max out chain size
+	
+	optional bool Trim = 5;				// trim
+	optional bool LeftDominant = 6;		// left_dominant
+	optional bool RightRecessive = 7;	// right_recessive
+	optional bool NotHRegFact = 8;		// not_hreg_fact
+}
+
+message TInterpProto {
+	optional string Fact = 1;
+	optional string Field = 2;
+	
+	optional bool Plus = 3;				// +StreetHouse.Street
+	optional string NormGrammems = 4;	// StreetHouse.Street::norm='ед,жен' - stored as bytes (TGramBitSet::ToBytes())
+	repeated string Option = 5;			// Status.Status::un_status | StreetHouse.Station::not_norm
+	
+	optional string FromFact = 6;
+	optional string FromField = 7;
+	optional string AssignedValue = 8;	// "true" or "false" for bool fields (could be non-ASCII, encoded to UTF8)
+}
+
+message TTermProto {
+	optional string Name = 1;				// terminal/non-terminal name or lemma (could be non-ASCII, encoded to UTF8)
+	
+	enum EType {
+		NON_TERMINAL = 0;
+		TERMINAL = 1;
+		LEMMA = 2;
+	}
+	optional EType Type = 2;		
+	optional TPostfixProto Postfix = 3;
+}
+
+
+message TPostfixProto {
+	optional TKeyWordsProto KWType = 1;		// kwtype=abbrev | kwtype=~имя_статьи
+	optional TKeyWordsProto KWSet = 2;		// kwset=[_один] | kwsetf=~[number]
+	optional TKeyWordsProto Label = 3;		// label=неодуш_слово_с_упр_родит
+	
+	repeated TAgrProto Agr = 4;				// gnc-agr | nc-agr | c-agr | gn-agr | gc-agr | sp-agr | fio-agr | ~gnc-agr | ~nc-agr | ~c-agr | ~gn-agr | ~gc-agr | ~sp-agr | fem-c-agr| ~fem-c-agr | ~fio-agr
+	repeated TGramProto Gram = 5;			// gram="род"					(for any level of parsed tree, current grammems of item are used)
+	repeated TGramProto GramUnion = 6;		// GU=&[им,вин,род,дат,твор,пр]	(for terminals only)
+	
+	optional TRegexProto Regex = 7;			// wff=/[0-9]+/ | wfl=~/типа/ | wfm=/[A-Я- ]{3,14}/
+	optional bool Root = 8;					// rt			(main word)
+	optional bool ExcludeFromNorm = 9;		// cut			(strip this word from normalized version of the sequence)
+	
+	enum EOption {
+		UNDEF = 2;		// the default value, when nothing specified explicitly
+		DENY = 0;		// ~OPTION
+		ALLOW = 1;		// OPTION
+	}
+	
+	optional bool LReg = 10;				// l-reg
+	optional bool HReg = 11;				// h-reg
+	optional bool HReg1 = 12;				// h-reg1
+	optional EOption HReg2 = 13;			// h-reg2 | ~h-reg2
+	
+	optional bool Bastard = 20;				// ~dict		(non-dictionary word, bastard)
+	optional EOption Latin = 21;			// lat | ~lat	(latin-letters word, currently does not work properly)
+	
+	//repeated string UnaryReduceCheck = 22;	// "quoted" | "~quoted" | "l-quoted" | "r-quoted" | "~l-quoted" | "~r-quoted"
+	optional EOption LeftQuoted = 22;
+	optional EOption RightQuoted = 23;
+	
+	optional EOption IsName = 24;			// name_dic | ~name_dic		(person-name from morph)
+	optional EOption IsGeo = 25;			// geo_dic | ~geo_dic		(geo-name from morph or geo-thesaurus)
+	optional EOption FirstWord = 26;		// fw | ~fw					(first word of the sentence)
+	optional EOption MultiWord = 27;		// mw | ~mw					(multi-word)
+		
+	optional bool NoPrep = 30;				// hom=~prep	(not a preposition)
+	optional bool NoHom = 31;				// no_hom		(strictly non-homonymic)
+	
+	optional TGztFieldProto GztWeight = 32;	// gztweight="xxx" (a name of field in associated gzt-article to use as a user-weight component)
+											// the value is field name, article name (or type name) is taken from "kwtype" option
+	
+	// Deprecated postfix options, currently not supported by Tomita:
+	//optional string FileName = 100;		// any word with a single period, e.g. "abc.def"
+	//optional string TakeLetters = 101;	// let		(?)
+	//optional string CheckLetters = 102;	// @let		(?)
+	//optional EOption IsOrg = 103;			// org_dic, ~org_dic	(organization from special dictionary)
+}
+
+message TKeyWordsProto {	
+	repeated string KeyWord = 1;	// could be non-ASCII, encoded to UTF8, always sorted
+	optional bool Negative = 2;
+	optional bool FirstWord = 3;	// if true, applied to first word of corresponding sequence, otherwise - to main word (default)
+	
+	enum ERelation {
+		SAME_TYPE = 1;
+		SAME_OR_SUBTYPE = 2;
+		SUBTYPE = 3;
+	}
+	optional ERelation Relation = 4;
+}
+
+enum EAgrType {
+	Any = 0;
+	GenderNumberCase = 1;
+	NumberCase = 2;
+	Case = 3;
+	GenderNumber = 4;
+	GenderCase = 5;
+	SubjectPredicate = 6;
+	Fio = 7;
+	FemCase = 8;
+	Izafet = 9;
+    AfterNumber = 10;
+    Geo = 11;		// geo-agreement: two words have gzt-articles which are linked geo-objects
+}
+
+// Grammem agreements
+message TAgrProto {	
+	required EAgrType Type = 1;
+	optional bool Negative = 2;
+	optional uint32 Id = 3;
+}
+
+message TGramProto {
+	required string Grammems = 1;					// stored as bytes (TGramBitSet::ToBytes())
+	optional bool Negative = 2;
+	optional bool MixForms = 3;						// grammems checked on mixed forms grammems, not on each single form separately
+}
+
+message TRegexProto {
+	required string Mask = 1;						// could be non-ASCII, but should always be within cp1251 encodeable range
+	optional bool Negative = 2;
+	
+	enum EWord {
+		MAIN = 0;
+		FIRST = 1;
+		LAST = 2;
+	}
+	optional EWord Word = 3;
+}
+
+message TGztFieldProto {
+	optional string Article = 1;					// filled from corresponding "kwtype" option of same postfix
+	optional string Field = 2;						// value of "gztweight" option
+}

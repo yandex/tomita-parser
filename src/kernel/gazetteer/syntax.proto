@@ -1,0 +1,84 @@
+//Gazetteer syntax description
+
+package NGzt;
+
+// Describes a complete .gzt file.
+message TGztFileDescriptorProto {
+    optional string name = 1;       // file name, relative to root of source tree
+    optional string package = 2;    // e.g. "foo", "foo.bar", etc.
+
+    // Names of files imported by this file.
+    repeated string dependency = 3;
+/*
+    // All top-level definitions in this file.
+    // These are subset of protobuf definitions.
+    repeated google.protobuf.DescriptorProto message_type = 4;
+    repeated google.protobuf.EnumDescriptorProto enum_type = 5;
+    repeated google.protobuf.FieldDescriptorProto extension = 7;
+    optional google.protobuf.FileOptions options = 8;
+*/
+
+    repeated TArticleDescriptorProto article = 10;
+
+    // Encoding of current gzt file (important for string literals and article identifiers)
+    // Option syntax:
+    //      encoding "cp1251";
+    optional string encoding = 11 [default="utf-8"];
+
+    // If this option specified, a gazetteer binary will not store article names
+    // of current gazetteer file, thus making the binary significantly smaller.
+    // Essentially, this option makes all articles anonymous (i.e. namesless) after compilation.
+    // Is is useful when you need to make references from one article to other using TRef field,
+    // but do not need referencing articles by name after compilation when searching with gazetteer.
+    // Option syntax: 
+    //      option "strip-names";
+    optional bool strip_names = 12 [default=false];
+}
+
+// Describes an article with data
+message TArticleDescriptorProto {
+    optional string type = 1;
+    optional string name = 2;
+    repeated TArticleFieldDescriptorProto field = 3;
+}
+
+// Describes a field with data within an article.
+message TArticleFieldDescriptorProto {
+    optional string name = 1;
+    optional TFieldValueDescriptorProto value = 2;
+}
+
+// Describes a possible field value within an article.
+message TFieldValueDescriptorProto {
+    enum EValueType {
+        TYPE_INTEGER    = 1;
+        TYPE_FLOAT      = 2;
+        TYPE_STRING     = 3;
+        TYPE_IDENTIFIER = 4;   // could be enum value or a reference to other article (by its name), or even article type (message).
+        TYPE_LIST       = 5;
+        TYPE_BLOCK      = 6;
+    }
+
+    optional EValueType type = 1;
+
+    // only one of next fields should be initialized, according to value_type
+    optional int64 int_number = 2;
+    optional double float_number = 3;
+    optional string string_or_identifier = 4;
+    optional TValuesListDescriptorProto list = 5;
+    repeated TArticleFieldDescriptorProto sub_field = 6;          // embedded sub-message in inner block "{ ... }"
+}
+
+// Describes a list of sub-values
+message TValuesListDescriptorProto {
+    enum EListType {
+        BRACKETED      = 1;        // [A, B, C]
+        PIPE_DELIMITED = 2;        // A | B | C
+        PLUS_DELIMITED = 3;        // A + B + C
+    }
+
+    optional EListType type = 1;
+    repeated TFieldValueDescriptorProto value = 2;
+    
+}
+

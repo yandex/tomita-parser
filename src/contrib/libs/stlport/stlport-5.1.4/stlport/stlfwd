@@ -1,0 +1,24 @@
+#pragma once
+
+namespace NStl {
+    template <class C>
+    class char_traits;
+
+    template <class C, class T, class A>
+    class basic_string;
+
+    template <class C, class T>
+    class basic_istream;
+
+    template <class C, class T>
+    class basic_ostream;
+
+    template <class C, class T, class A>
+    class basic_string;
+
+    template <class F, class S>
+    struct pair;
+
+    template <class T>
+    class allocator;
+}

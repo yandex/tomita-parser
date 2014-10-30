@@ -1,0 +1,180 @@
+// Description of gazetteer binary structure (*.gzt.bin)
+package NGzt.NBinaryFormat;
+
+
+message TGazetteer
+{
+    optional TGztInfo Header = 1;
+
+    optional TProtoPool Descriptors = 2;
+    optional TArticlePool Articles = 3;
+    optional TGztTrie Trie = 4;
+}
+
+message TGztInfo
+{
+    repeated TSourceFile ImportedFile = 1;
+    repeated string CustomKey = 2;
+}
+
+message TSourceFile 
+{
+    optional string Path = 1;
+    optional string Hash = 2;
+    optional bool Builtin = 3;
+    optional bool Root = 4;   // the file is source root gzt
+}
+
+
+message TProtoPool
+{
+    repeated string DescriptorName = 1;
+    repeated uint32 BaseIndex = 2 [packed = true];
+    repeated bytes File = 3;    // serialized FileDescriptorProto
+}
+
+message TArticlePool
+{
+    repeated uint32 CustomArticle = 1 [packed = true];
+    optional TBlobRef ArticleData = 2;
+    optional TBlobRef TitleIndex = 3;
+}
+
+message TGztTrie
+{
+    optional uint32 CharSize = 1;
+    optional uint32 MetaAnyWordId = 2;
+
+    optional TBlobRef ExactFormTrieRef = 3;		// deprecated, to be deleted
+    optional TBlobRef LemmaTrieRef = 4;			// deprecated, to be deleted
+    optional TBlobRef WordTrieRef = 9;
+    optional TBlobRef PhraseTrieRef = 5; 
+    optional TBlobRef CompoundTrieRef = 6;
+    optional TBlobRef CompoundElementsRef = 8;
+
+    optional TArticleFilter ArticleFilter = 7;
+    
+    
+}
+
+message TBlobRef
+{
+    // key of the blob in BlobCollection (which is serialized separately, and de-serialized from mapped memory without data copying)
+    optional string BlobKey = 1;
+}
+
+message TArticleFilter
+{
+    optional TBitSetStorage Grammems = 1;
+    optional TSingleWordFilterStorage WordGrammems = 2;
+
+    optional TCapitalizationStorage Capitalizations = 3;
+    optional TSingleWordFilterStorage WordCases = 4;
+
+    optional TWordIndexStorage GleicheWords = 5;
+    optional TAgrStorage Agreements = 6;
+
+    optional TFilterDataStorage FilterData = 7;
+    optional TFilterStorage Filters = 8;			// not used, obsolete
+
+    optional TBitSetStorage LangMasks = 9;
+    optional TSingleWordFilterStorage WordLanguages = 10;
+
+
+    optional TBlobRef GrammemsRef = 51;
+    optional TBlobRef WordGrammemsRef = 52;
+
+    optional TBlobRef CapitalizationsRef = 53;
+    optional TBlobRef WordCasesRef = 54;
+
+    optional TBlobRef GleicheWordsRef = 55;
+    optional TBlobRef AgreementsRef = 56;
+
+    optional TBlobRef FilterDataRef = 57;
+    optional TBlobRef FiltersRef = 58;
+
+    optional TBlobRef LangMasksRef = 59;
+    optional TBlobRef WordLanguagesRef = 60;
+    
+    optional TBlobRef SimpleArticlesRef = 61;
+}
+
+/*
+message TStorage
+{
+    repeated TItem Items = 1;
+    optional TJoinedVectors ItemSets = 2;
+}
+*/
+
+message TItemSets
+{
+    repeated uint32 AllItems = 1   [packed = true];
+    repeated uint32 FirstIndex = 2 [packed = true];
+}
+
+message TBitSetStorage
+{
+    optional TItemSets ItemSets = 1;
+    repeated bytes Items = 2;                   // TEnumBitSet
+}
+
+message TSingleWordFilterStorage
+{
+    optional TItemSets ItemSets = 1;
+
+    //repeated TSingleWordFilter Items = 2;
+    repeated uint32 Word = 2  [packed = true];
+    repeated uint32 Index_ = 3 [packed = true];  // all repeated fields should have equal number of values
+}
+
+message TCapitalizationStorage
+{
+    optional TItemSets ItemSets = 1;
+
+    //repeated TCapitalization Items = 2;
+    repeated uint32 Type = 2;
+    repeated uint64 CustomMask = 3;             // all repeated fields should have equal number of values
+}
+
+message TWordIndexStorage
+{
+    optional TItemSets ItemSets = 1;
+    repeated uint32 Items = 2 [packed = true];
+}
+
+message TAgrStorage
+{
+    optional TItemSets ItemSets = 1;
+
+    //repeated TAgr Items = 2;
+    repeated uint32 WordsIndex = 2  [packed = true];
+    repeated bytes GleicheTypes = 3;                           // all repeated fields should have equal number of values
+}
+
+message TFilterDataStorage
+{
+    optional TItemSets ItemSets = 1;
+
+    //repeated TFilterData Items = 2;
+    repeated uint32 AllowedGramIndex = 2   [packed = true];    // all repeated fields should have equal number of values
+    repeated uint32 ForbiddenGramIndex = 3 [packed = true];
+
+    repeated uint32 AllowedCaseIndex = 4   [packed = true];
+    repeated uint32 ForbiddenCaseIndex = 5 [packed = true];
+
+    repeated uint32 AgrIndex = 6           [packed = true];
+
+    repeated uint32 AllowedLangIndex = 7   [packed = true];
+    repeated uint32 ForbiddenLangIndex = 8 [packed = true];
+}
+
+message TFilterStorage
+{
+    optional TItemSets ItemSets = 1;
+
+    //repeated TFilter Items = 2;
+    repeated uint32 ArticleId = 2  [packed = true];
+    repeated uint32 DataIndex = 3  [packed = true];            // all repeated fields should have equal number of values
+}
+ 

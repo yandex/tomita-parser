@@ -1,0 +1,5 @@
+MACRO(ATT_UDF UDF_NAME)
+    SET(ATTFUNCTOOL yweb/antispam/tools/att-kiwi-tools/attfunctool)
+    SET(_main_dep ${ARCADIA_ROOT}/yweb/antispam/tools/att-kiwi-tools/attfunclib/functions.cpp)
+    RUN_PROGRAM(${ATTFUNCTOOL} functiontemplate ${UDF_NAME} ${UDF_NAME}.h IN ${UDF_NAME}.h ${_main_dep} STDOUT ${UDF_NAME}.cpp)
+ENDMACRO ()

@@ -1,0 +1,145 @@
+
+message TTextMinerConfig {
+
+  message TInputParams {
+    enum SourceFormat {
+      plain = 0;
+      html = 1;
+    }
+    
+    enum SourceType {
+      no = 0;
+      dpl = 1;
+      mapreduce = 2;
+      arcview = 3;
+      tar = 4;
+      som = 5;
+      yarchive = 6;
+    }
+
+    optional string File = 1 [default = ""];
+    // Если File пропущено - то STDIN
+
+    optional string Dir = 2 [default = ""];
+    // Если читаем файлы из папки
+
+    optional SourceFormat Format = 3 [default = plain];
+    // Если Format пропущено - то plain
+
+    optional SourceType Type = 4 [default = no];
+    // Если Type пропущено - то читаем обычный файл (то же, что "no")
+
+    optional string Encoding = 5 [default = "utf8"];
+    // Кодировка входных данных (если не задано - utf8)
+
+    optional string SubKey = 6;
+    // Для mapreduce
+
+    optional int32 FirstDocNum = 7 [default = -1];
+    // Для arcview: первый документ, который надо анализировать (если не задано - с начала архива)
+
+    optional int32 LastDocNum = 8 [default = -1];
+    // Для arcview: последний документ, который надо анализировать (если не задано - до конца архива)
+
+    optional string Url2Fio = 9;
+    // Таблица url2fio для interview
+
+    optional string Date = 10;
+    // Дата для форматов кроме arcview
+  }
+  
+  message TOutputParams {
+    enum OutputMode {
+      append = 0;
+      overwrite = 1;
+    }
+    
+    enum OutputFormat {
+      xml = 0;
+      text = 1;
+      proto = 2;
+      mapreduce = 3;
+      json = 4;
+    }
+    
+    optional string File = 1 [default = ""];
+    // Если не задано - то STDOUT
+
+    optional OutputMode Mode = 2 [default = append];
+    // Если не задано явно, но файл существует - ошибка
+
+    optional OutputFormat Format = 3 [default = xml];
+    // Если не задано - то xml
+
+    optional string Encoding = 4 [default = "utf8"];
+    // Кодировка выходных данных (не имеет смысла для protobuf?), по умолчанию - utf8
+
+    optional bool SaveLeads = 5 [default = false];
+    // Сохранять ли лиды
+
+    optional bool SaveEquals = 6 [default = false];
+    // Сохранять ли equals facts
+  }
+  
+  message TArticleRef {
+    required string Name = 1;
+  }
+  
+  message TFactTypeRef {
+    required string Name = 1;
+    optional bool NonEquality = 2 [default = false];
+  }
+    
+  required string Dictionary = 1;
+  // Может быть папкой, тогда парсер будет работать в режиме совместимости со старыми путями
+
+  optional string PrettyOutput = 2;
+  // отладочный XML, к которому применяется AfDump.xsl -> надо делать ворнинг, что мы можем упасть
+
+  optional uint32 NumThreads = 3 [default = 1];
+  // кол-во потоков (по умолчанию - один)
+
+  optional string Language = 4 [default = "ru"]; 
+  // Язык (по умолчанию - русский)
+
+  optional string PrintTree = 5;
+  // В какой файл писать список построенных деревьев
+
+  optional string PrintRules = 6;
+  // В какой файл писать список применяемых правил
+ 
+  optional TInputParams Input = 7;
+  optional TOutputParams Output = 8;
+  repeated TArticleRef Articles = 9;
+  repeated TFactTypeRef Facts = 10;
+  
+  optional bool SavePartialFacts = 11 [default = true];
+  // Сохранять ли неполные факты (было params\parser_params\facts\@AddEmpty)
+  // SavePartialFacts - не документируем, а потом удаляем параметр
+
+  repeated TArticleRef ArticlesBeforeFragmentation = 12;
+
+  repeated TArticleRef Situations = 13;
+
+  optional bool AuxKwDict = 14 [default = false];
+  // Нужно ли загружать aux_dict_kw.cxx
+
+  optional bool IgnoreUpperCase = 15 [default = false];
+  // Распознавать имена даже со строчной буквы
+
+  optional bool ForceRecompile = 16 [default = false];
+  // Нужно ли обязательно перекомпилировать грамматики?
+
+  optional string BinaryDir = 17 [default = ""];
+  // Куда складывать бинарники грамматик (по умолчанию - туда же, куда исходники)
+
+  optional uint32 MaxNamesCount = 18 [default = 1000];
+  // Максимальное кол-во ФИО, при котором будет запущен кластеризатор ФИО.
+  // Значение 0 отключает кластеризатор ФИО
+
+  optional uint32 MaxFactsCountPerSentence = 19 [default = 25];
+  // Максимальное кол-во фактов одного типа в рамках одного предложения
+
+  optional bool UseOldLemmer = 20 [default = false];
+  // Использовать старый леммер Яндекса
+}

@@ -1,0 +1,24 @@
+// list of all kw-types used in aux-dic
+
+
+import "kernel/gazetteer/base.proto";
+import "articles_base.gztproto";
+
+//message abbrev              	: TAuxDicArticle {}
+message fio                     : TAuxDicArticle {}
+message fio_without_surname     : TAuxDicArticle {}
+message date                    : TAuxDicArticle {}
+message number                  : TAuxDicArticle {}
+message date_chain              : TAuxDicArticle {}
+
+message tl_variant              : TAuxDicArticle {}
+
+message none {} // special meaning
+
+//=========== interviews: имена и отчества =============
+
+message fio_name : TAuxDicArticle {}
+message fio_patronymic: TAuxDicArticle {}
+message fio_incompl: TAuxDicArticle {}
+
+
