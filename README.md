@@ -5,3 +5,4 @@ How to build?
 3. cd build
 4. cmake ../src/ -DMAKE_ONLY=FactExtract/Parser/tomita-parser -DCMAKE_BUILD_TYPE=Release
 5. make
+6. copy libmystem-c-binding.so from https://github.com/yandex/tomita-parser/releases/tag/v1.0 to the same folder
