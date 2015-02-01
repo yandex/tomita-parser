@@ -11,7 +11,7 @@ IF (YMAKE)
         library/svnversion
     )
 ELSE ()
-    SET_SVNREVISION()
+    SET_GITREVISION()
 ENDIF ()
 
 SRCS(

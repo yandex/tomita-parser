@@ -21,10 +21,24 @@ extern "C" const char* GetProgramSvnVersion() {
 #   else
         return REVISIONINFO" "__DATE__" "__TIME__;
 #   endif
+#elif defined(GIT_TAG)
+#   if defined(PROGRAM_VERSION)
+        return PROGRAM_VERSION "\n\n" GIT_TAG;
+#   else
+        return GIT_TAG" "__DATE__" "__TIME__;
+#   endif
 #elif defined(PROGRAM_VERSION)
     return PROGRAM_VERSION;
 #else
     return "No program version found";
+#endif
+}
+
+extern "C" const char* GetProgramVersionTag() {
+#if defined(SVN_REVISION)
+    return SVN_REVISION;
+#elif defined(GIT_TAG)
+    return GIT_TAG;
 #endif
 }
 

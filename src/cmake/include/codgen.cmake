@@ -386,7 +386,7 @@ MACRO (CREATE_SVNVERSION_FOR srcfile svdfile)
                 SET(SVN_DEPENDS "${ARCADIA_ROOT}/.git")
             ENDIF ()
 
-            LUA(${ARCADIA_ROOT}/cmake/include/svn_info.lua ${ARCADIA_ROOT} ${CMAKE_CXX_COMPILER} ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/${REALPRJNAME}.dir/flags.make ${ARCADIA_BUILD_ROOT}
+            LUA(${ARCADIA_ROOT}/cmake/include/svn_info.lua "${ARCADIA_ROOT}/../" ${CMAKE_CXX_COMPILER} ${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/${REALPRJNAME}.dir/flags.make ${ARCADIA_BUILD_ROOT}
                 IN ${ARCADIA_ROOT}/cmake/include/svn_info.lua ${SVN_DEPENDS}
                 CWD ${CMAKE_CURRENT_BINARY_DIR}
                 STDOUT ${svdfile}

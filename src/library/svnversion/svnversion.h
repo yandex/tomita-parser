@@ -10,6 +10,7 @@
 extern "C" {
 #endif
     const char* GetProgramSvnVersion();
+    const char* GetProgramVersionTag();
     void PrintProgramSvnVersion();
     const char* GetArcadiaSourcePath();
     const char* GetArcadiaSourceUrl();

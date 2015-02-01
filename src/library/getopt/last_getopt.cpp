@@ -534,6 +534,8 @@ void PrintVersionAndExit(const TOptsParser*) {
     Cout << PROGRAM_VERSION << Endl;
 #elif defined(SVN_REVISION)
     Cout << "revision: " << SVN_REVISION << " from " << SVN_ARCROOT << " at " << SVN_TIME << Endl;
+#elif defined(GIT_TAG)
+    Cout << "tag: " << GIT_TAG << Endl;
 #else
     Cerr << "program version: not implemented" << Endl;
     retCode = 1;

@@ -401,12 +401,12 @@ public:
     }
     // --svnrevision
     TOpt& AddVersionOption(char c = 'V') {
-        if (TOpt* o = FindLongOption("svnrevision")) {
+        if (TOpt* o = FindLongOption("coderevision")) {
             if (!o->CharIs(c))
                 o->AddShortName(c);
             return *o;
         }
-        return AddLongOption(c, "svnrevision", "print svn version")
+        return AddLongOption(c, "coderevision", "print source control revision")
             .HasArg(NO_ARGUMENT)
             .Handler(&PrintVersionAndExit);
     }

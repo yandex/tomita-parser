@@ -24,7 +24,7 @@ NLastGetopt::TEasySetup MakeTomitaParserOpts() {
     opts.SetFreeArgsNum(1, 1);
     opts.SetFreeArgTitle(0, "config.proto", "parser configuration file name");
 
-    opts.SetTitle("Yandex Tomita-parser, open source edition\nhttp://api.yandex.ru/tomita");
+    opts.SetTitle(Stroka("Yandex Tomita-parser ") + GetProgramVersionTag() + ". Open-source edition.\nhttp://api.yandex.ru/tomita");
 
     return opts; 
 }

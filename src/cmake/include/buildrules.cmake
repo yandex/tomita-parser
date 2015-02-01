@@ -2444,6 +2444,20 @@ MACRO (GENERATE_ENUM_SERIALIZATION)
     DIR_ADD_GENERATED_SRC(${FILE_GENERATED})
 ENDMACRO ()
 
+MACRO (SET_GITREVISION)
+    EXECUTE_PROCESS(
+        COMMAND git describe --tags --dirty
+        OUTPUT_VARIABLE __git_describe
+        WORKING_DIRECTORY ${ARCADIA_ROOT}
+        TIMEOUT 1
+        RESULT_VARIABLE __git_result
+    )
+    IF (__git_result EQUAL 0)
+        STRING(REGEX MATCH "[^\r\n]+" __git_describe "${__git_describe}")
+        ADD_DEFINITIONS(-DGIT_TAG="\\"${__git_describe}\\"")
+    ENDIF ()
+ENDMACRO ()
+
 MACRO (SET_SVNREVISION)
     IF (NOT NO_UTIL_SVN_DEPEND)
         EXECUTE_PROCESS(
