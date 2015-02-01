@@ -1,0 +1,22 @@
+encoding "utf8";               // указываем кодировку, в которой написан этот файл
+
+import "base.proto";           // подключаем описания protobuf-типов (TAuxDicArticle и прочих)
+import "articles_base.proto";  // Файлы base.proto и articles_base.proto встроены в компилятор.
+                               // Их необходимо включать в начало любого gzt-словаря.
+import "facttypes.proto";
+
+TAuxDicArticle "месяц"
+{
+    key = "январь" | "февраль" | "март" | "апрель" | "май" | "июнь" |
+          "июль" | "август" |   "сентябрь" | "октябрь" | "ноябрь" | "декабрь"
+}
+
+TAuxDicArticle "день_недели"
+{
+    key = "понедельник" | "вторник" | "среда" | "четверг" | "пятница" | "суббота" | "воскресенье"
+}
+
+TAuxDicArticle "дата"
+{
+    key = { "tomita:date.cxx" type=CUSTOM }
+}

@@ -1,0 +1,107 @@
+//
+package NFactex;
+
+// All string fields are always UTF-8
+
+message TDocument
+{
+    required uint32 Id = 1;
+    required string Url = 2;
+    optional string Date = 3;
+    repeated string Link = 4;
+    optional string Host = 10;
+    optional string UrlType = 11;
+    
+    optional uint32 TitleSentenceCount = 12;	// number of title sentences in the document
+
+    repeated TFactGroup FactGroup = 5;
+    repeated TSimilarFactPair EqualFact = 6;
+    repeated TLead Lead = 7;
+}
+
+message TFactGroup
+{
+    required string Type = 1;       // fact-type name
+    repeated TFact Fact = 2;
+}
+
+message TFact
+{
+    required TFactAttr Attr = 1;
+    repeated TFactField Field = 2;
+    
+    optional uint32 Index = 3;		// fact index, unique among all facts in the same document (used in TSimilarFact)
+}
+
+message TFactAttr
+{
+    optional uint32 LeadIndex = 3;
+    repeated uint32 LeadSpanIndex = 4;
+    
+    optional uint32 TextPos = 5;		// position of first character respective to the whole document text (measured in wide characters, not utf-8 bytes)
+    optional uint32 TextLen = 6;		// length in characters
+    
+    optional int32 SentenceNumber = 7;	// index of containing sentance.
+    optional int32 FirstWord = 8;		// index of the first word (respective to the containing sentence).
+    optional int32 LastWord = 9;		// index of the last word.
+    
+    optional bool InTitle = 10;			// if the fact was found in a title sentance
+}
+
+message TFactField
+{
+    required string Name = 1;
+    optional string Value = 2;
+    optional string Info = 3;
+
+    optional string GeoArts = 4;
+    repeated string Option = 5;     // field_descr.m_options
+}
+
+message TSimilarFactPair
+{
+    enum ESimilarityType
+    {
+        SameEntry = 0;
+        FromOneDoc = 1;
+        FromOneSent = 2;
+    }
+
+    required TSimilarFact Fact1 = 1;
+    required TSimilarFact Fact2 = 2;
+    optional ESimilarityType SimilarityType = 5;
+}
+
+message TSimilarFact
+{
+    required uint32 FactIndex = 1;
+    optional string SimilarAttrs = 2;
+}
+
+
+message TLead
+{
+    required string Text = 1;		// utf-8!
+    repeated TLeadSpan Span = 2;
+    optional uint32 DocId = 3;
+}
+
+message TLeadSpan
+{
+    required uint32 StartChar = 1;  // inclusive
+    required uint32 StopChar = 2;   // non-inclusive, so Stop - Start == SpanLength (in characters)
+    
+    required uint32 StartByte = 3;  // inclusive
+    required uint32 StopByte = 4;   // non-inclusive, so Stop - Start == SpanLength (in bytes)
+    
+    optional string Lemma = 5;		// utf-8!
+    optional string TypeLetter = 6;	// first letter of fact-field (e.g. P for Post, F for Fio)
+}
+
+
+
+
+
+
+
+

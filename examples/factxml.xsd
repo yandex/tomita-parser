@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+  xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="fdo_objects" type="FdoObjects"/>
+
+  <xs:complexType name="FdoObjects">
+    <xs:sequence>
+      <xs:element name="document" type="Document" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Document">
+    <xs:sequence>
+      <xs:element name="facts" type="FactsList" maxOccurs="1"/>
+      <xs:element name="Leads" type="LeadsList" maxOccurs="1"/>
+    </xs:sequence>
+
+    <xs:attribute name="url" type="xs:string"/>
+    <xs:attribute name="di" type="xs:integer"/>
+    <xs:attribute name="bi" type="xs:nonNegativeInteger"/>
+    <xs:attribute name="date" type="xs:date"/>
+  </xs:complexType>
+
+  <xs:complexType name="FactsList">
+    <xs:sequence>
+      <xs:element name="fact" type="Fact" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="LeadsList">
+    <xs:sequence>
+      <xs:element name="Lead" type="Lead" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Fact">
+    <xs:sequence>
+      <xs:element name="FieldName" type="Field" maxOccurs="unbounded"/>
+    </xs:sequence>
+
+    <xs:attribute name="FactID" type="xs:nonNegativeInteger"/>
+    <xs:attribute name="LeadID" type="xs:nonNegativeInteger"/>
+    <xs:attribute name="FieldsInfo" type="xs:string"/>
+    <xs:attribute name="pos" type="xs:nonNegativeInteger"/>
+    <xs:attribute name="len" type="xs:nonNegativeInteger"/>
+    <xs:attribute name="sn" type="xs:nonNegativeInteger"/>
+    <xs:attribute name="fw" type="xs:nonNegativeInteger"/>
+    <xs:attribute name="lw" type="xs:nonNegativeInteger"/>
+  </xs:complexType>
+
+  <xs:complexType name="Lead">
+    <xs:attribute name="text" type="xs:string"/>
+    <xs:attribute name="id" type="xs:nonNegativeInteger"/>
+  </xs:complexType>
+
+  <xs:complexType name="Field">
+    <xs:attribute name="val" type="xs:string"/>
+  </xs:complexType>
+</xs:schema>

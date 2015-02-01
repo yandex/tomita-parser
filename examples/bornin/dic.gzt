@@ -1,0 +1,44 @@
+encoding "utf8";
+
+import "base.proto";     
+import "articles_base.proto";
+import "kwtypes_my.proto";
+
+import "facttypes.proto";
+
+TAuxDicArticle "РодилсяВ"
+{
+    key = { "tomita:bornin.cxx" type=CUSTOM }
+}
+
+city "Нижний_Новгород"
+{
+    key = "Нижний Новгород";
+    mainword = 2;
+}
+
+city "Санкт_Петербург"
+{
+    key = "Санкт-Петербург" | "Питер" | "Петербург";
+    lemma = "Санкт-Петербург";
+} 
+
+city "Москва"
+{
+    key = "Москва";
+}
+
+born "родиться"
+{
+    key = "родиться"
+}
+
+born "появиться_на_свет"
+{
+    key = "появиться на свет"
+}
+
+/*fio "АлгоритмФИО"
+{
+    key = { "alg:fio" type=CUSTOM }
+}*/

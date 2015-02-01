@@ -1,0 +1,10 @@
+import "base.proto";           // описание protobuf-типов
+import "facttypes_base.proto"; // описание protobuf-типа NFactType.TFact
+
+message Date: NFactType.TFact 
+{
+  optional string DayOfWeek = 1;
+  optional string Day = 2;
+  optional string Month = 3;
+  optional string Year = 4;
+}

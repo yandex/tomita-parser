@@ -1,0 +1,25 @@
+encoding "utf8";
+
+TTextMinerConfig {
+  Dictionary = "dic.gzt";
+  
+  PrettyOutput = "debug.html";
+
+  Input = {
+    File = "test.txt";
+    //File = "wikitext.1K";
+    Type = dpl;
+  }
+
+  Articles = [
+    { Name = "РодилсяВ" }
+  ]
+
+  Facts = [
+    { Name = "BornFact" }
+  ]
+
+  Output = {
+    Format = text;
+  }
+}
