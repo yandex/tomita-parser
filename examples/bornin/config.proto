@@ -7,7 +7,6 @@ TTextMinerConfig {
 
   Input = {
     File = "test.txt";
-    //File = "wikitext.1K";
     Type = dpl;
   }
 
