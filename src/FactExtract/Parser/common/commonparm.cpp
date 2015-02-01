@@ -4,14 +4,30 @@
 #include <util/string/strip.h>
 #include <util/string/cast.h>
 
+#include <library/getopt/last_getopt.h>
+#include <library/svnversion/svnversion.h>
+
 #include <kernel/gazetteer/config/protoconf.h>
 
 #include <FactExtract/Parser/afdocparser/rusie/parseroptions.h>
 
 #include "textminerconfig.pb.h"
 
-#define ARG_NAME_BINARY_DIR "--binary-dir="
+#define OPT_BINARY_DIR "binary-dir"
 
+NLastGetopt::TEasySetup MakeTomitaParserOpts() {
+    NLastGetopt::TEasySetup opts;
+
+    opts('b', OPT_BINARY_DIR,  " ", "Alternative directory for compiled grammars.", false)
+        ('v', "version", &PrintSvnVersionAndExit0, "Print version information");
+
+    opts.SetFreeArgsNum(1, 1);
+    opts.SetFreeArgTitle(0, "config.proto", "parser configuration file name");
+
+    opts.SetTitle("Yandex Tomita-parser, open source edition\nhttp://api.yandex.ru/tomita");
+
+    return opts; 
+}
 
 CCommonParm::CCommonParm() {
     m_strSourceType = "no";
@@ -27,32 +43,19 @@ bool CCommonParm::InitParameters() {
 
 bool CCommonParm::AnalizeParameters(int argc, char *argv[]) {
     try {
-        Stroka strParmFileName;
-        if (argc == 1)
-            return false;
+        NLastGetopt::TOpts opts = MakeTomitaParserOpts();
+        NLastGetopt::TOptsParseResult r(&opts, argc, argv);
 
-        for (int i = 1; i < argc; i++) {
-            Stroka a = argv[i];
-            if (a.substr(0, ToString(ARG_NAME_BINARY_DIR).length()) == ARG_NAME_BINARY_DIR) {
-                if (m_args.has(ARG_NAME_BINARY_DIR)) {
-                    Cerr << "Error: multiple definition of --binary-dir argument" << Endl;
-                    return false;
-                }
+        if (r.Has(OPT_BINARY_DIR))
+            m_args[OPT_BINARY_DIR] = r.Get(OPT_BINARY_DIR);
 
-                m_args[ARG_NAME_BINARY_DIR] = a.substr(ToString(ARG_NAME_BINARY_DIR).length());
-            } else
-                m_strConfig = a;
-        }
-
-        if (m_strConfig.length() > 0)
+        if (r.GetFreeArgCount() > 0) {
+            m_strConfig = r.GetFreeArgs()[0];
             ParseConfig(m_strConfig);
-        else {
-            Cerr << "Error: config name isn't specified" << Endl;
+        } else
             return false;
-        }
 
         return true;
-
     } catch (yexception& e) {
         m_strError += e.what();
         return false;
@@ -63,11 +66,7 @@ bool CCommonParm::AnalizeParameters(int argc, char *argv[]) {
 }
 
 void CCommonParm::PrintParameters() {
-    Cerr << "Yandex Tomita-parser, open source edition (build date " << __DATE__ << ")" << Endl << Endl;
-    Cerr << "Usage:" << Endl << Endl;
-    Cerr << "\ttomitaparser configuration_file.proto" << Endl << Endl;
-    Cerr << "configuration_file.proto - parser configuration file" << Endl;
-    Cerr << "For the details on the configuration file syntax please read the manual at http://api.yandex.ru/tomita" << Endl << Endl;
+    MakeTomitaParserOpts().PrintUsage("tomita-parser", Cerr);
 }
 
 bool CCommonParm::Init(int argc, char *argv[]) {
@@ -379,11 +378,11 @@ bool CCommonParm::ParseConfig(const Stroka& fn) {
     if (!Config)
         ythrow yexception() << "Cannot read the config from \"" << fn << "\".";
 
-    if (m_args.has(ARG_NAME_BINARY_DIR)) {
+    if (m_args.has(OPT_BINARY_DIR)) {
         if (Config->has_binarydir() && Config->binarydir().length() > 0)
-            ythrow yexception() << "Both " << ARG_NAME_BINARY_DIR << " and \"BinaryDir\" config parameter specified";
+            ythrow yexception() << "Both \"--" << OPT_BINARY_DIR << "\" command line argument and \"BinaryDir\" config parameter specified";
 
-        Config->set_binarydir(m_args[ARG_NAME_BINARY_DIR]);
+        Config->set_binarydir(m_args[OPT_BINARY_DIR]);
     }
 
     if (Config->has_input()) {

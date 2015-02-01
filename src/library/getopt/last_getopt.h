@@ -15,8 +15,6 @@
 
 #include <stdarg.h>
 
-/// http://wiki.yandex-team.ru/development/poisk/arcadia/util/lastgetopt
-
 namespace NLastGetopt {
 
 enum EHasArg {
