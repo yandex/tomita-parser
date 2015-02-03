@@ -976,7 +976,7 @@ bool CWorkGrammar::LoadHeader(TInputStream* input)
         if (!LoadProtectedSize(input, compilerVersion) || compilerVersion != TOMITA_COMPILER_VERSION)
             return false;
         size_t lemmerVersion = 0;
-        if (!LoadProtectedSize(input, lemmerVersion) || (int)lemmerVersion != GetLemmerVersion())
+        if (!LoadProtectedSize(input, lemmerVersion) || lemmerVersion != GetLemmerVersion())
             return false;
         LoadProtected(input, SourceFiles);
         return true;

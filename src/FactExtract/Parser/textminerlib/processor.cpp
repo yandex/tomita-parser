@@ -163,7 +163,7 @@ void CProcessor::PrintSpeed(Stroka strUrl)
             iTouchedSents = 100 * TouchedSentenceCount / SentenceCount;
 
         Stroka suTime;
-        suTime = Sprintf("Time:%s Doc:%d Vol:%.2fMb Speed:%.0fMb/h (%s), Used sentences:%.2f%%",
+        suTime = Sprintf("Time:%s Doc:%lu Vol:%.2fMb Speed:%.0fMb/h (%s), Used sentences:%.2f%%",
             intervalTime.c_str(), DocCount, vm, speed, strUrl.c_str(), iTouchedSents);
         Clog << suTime << '\r';
     }

@@ -153,8 +153,8 @@ private:
   bool InitSynAnGrammar(const Stroka& dicsPath);
   void InitLemmaFreq();
 
-  void InitAuxKwDict(const Stroka& dicsPath);
-  void InitGazetteer(const Stroka& dicsPath);
+  void InitAuxKwDict();
+  void InitGazetteer();
   void InitGazetteerTitleIndexImpl();
   void InitFactTypes();
   void InitRoot(const Stroka& strDicPath, const Stroka& strBinPath = "");

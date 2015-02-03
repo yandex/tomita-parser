@@ -290,11 +290,7 @@ void CSentenceRusProcessor::FindNames(yvector<CFioWordSequence>& foundNames,
         for (size_t i = 0; i < foundWords.size(); i++) {
             const CWord& pW = m_Words.GetWord(foundWords[i]);
 
-            COccurrence o;
-            o.first = pW.GetSourcePair().FirstWord();
-            o.second = pW.GetSourcePair().LastWord() + 1;
-            o.m_GrammarRuleNo = i;
-            o.m_pInputItem = 0;
+            COccurrence o(pW.GetSourcePair().FirstWord(), pW.GetSourcePair().LastWord() + 1, i);
             multiWordsOccurrences.push_back(o);
             if (IsBadMWNFio(m_Words[foundWords[i]].GetSourceWordSequence()))
                 fiosToDelete.push_back(pW.GetSourcePair());
@@ -303,11 +299,7 @@ void CSentenceRusProcessor::FindNames(yvector<CFioWordSequence>& foundNames,
         std::multiset<CWordsPair, SSimplePeriodOrder> manuallyFoundFios;
         for (size_t i = 0; i < foundNames.size(); i++) {
             const CWordSequence& ws = foundNames[i];
-            COccurrence o;
-            o.first = ws.FirstWord();
-            o.second = ws.LastWord() + 1;
-            o.m_GrammarRuleNo = 0xFFFF;
-            o.m_pInputItem = 0;
+            COccurrence o(ws.FirstWord(), ws.LastWord() + 1, 0xFFFF);
             manuallyFoundFios.insert(ws);
             multiWordsOccurrences.push_back(o);
         }

@@ -20,34 +20,17 @@ struct CPeriodSolutionWeight
 
 CPeriodSolutionWeight::CPeriodSolutionWeight()
 {
-    //m_Weight = 1;
     m_Coverage = 0;
     m_VirtualGroup.m_KwtypesCount = 0;
 
     m_Weight = CInputItem::TWeight::Zero();
 };
 
-//CPeriodSolutionWeight&    CPeriodSolutionWeight::operator += (const  CPeriodSolutionWeight& _X)
-//{
-//    //m_Weight    *= _X.m_Weight;
-//    m_VirtualGroup.AddWeightOfChild(&_X.m_VirtualGroup);
-//    m_Coverage    += _X.m_Coverage;
-//    m_PeriodsCount += _X.m_PeriodsCount;
-//    return *this;
-//};
-
 bool  CPeriodSolutionWeight::operator < (const  CPeriodSolutionWeight& _X) const
 {
     if (m_Coverage !=  _X.m_Coverage)
         return m_Coverage < _X.m_Coverage;
     else {
-/*        double w1;
-                m_VirtualGroup.GetItemWeight(w1);
-        double w2;
-                _X.m_VirtualGroup.GetItemWeight(w2);
-        if (w1 != w2)
-            return w1 < w2;
-*/
         if (m_Weight != _X.m_Weight)
             return m_Weight < _X.m_Weight;
         else
@@ -58,14 +41,6 @@ bool  CPeriodSolutionWeight::operator < (const  CPeriodSolutionWeight& _X) const
 
 bool  CPeriodSolutionWeight::operator == (const CPeriodSolutionWeight& _X) const
 {
-/*
-   double weight1;
-   m_VirtualGroup.GetItemWeight(weight1);
-   double weight2;
-   _X.m_VirtualGroup.GetItemWeight(weight2);
-
-   return m_Coverage == _X.m_Coverage && weight1 == weight2;
-*/
     return m_Coverage == _X.m_Coverage && m_Weight == _X.m_Weight;
 }
 
@@ -147,23 +122,6 @@ void SolveAmbiguityRecursive (const yvector< COccurrence >& Occurrences, size_t 
 
         CPeriodSolutionWeight CurrSolution = SaveSolution;
         CurrSolution.AddOccurrence(Occurrences[k], k);
-/*
-        size_t CurrCoverage = 0;
-        if (Occurrences[k].m_pInputItem != 0)
-        {
-            CurrSolution.m_VirtualGroup.SetLastWord( Occurrences[k].second-1);
-            CurrSolution.m_VirtualGroup.AddWeightOfChild( Occurrences[k].m_pInputItem );
-            CurrSolution.m_VirtualGroup.GetItemWeight(CurrSolution.m_Weight);       //cache weight;
-            CurrCoverage = Occurrences[k].m_pInputItem->GetCoverage();
-        }
-        if (CurrCoverage == 0)
-            CurrCoverage = Occurrences[k].second - Occurrences[k].first;
-
-        CurrSolution.m_Coverage += CurrCoverage;
-
-        // try k as a possible  variant of continuing
-        CurrSolution.m_Solution.push_back(k);
-*/
 
         //  ignoring  all periods which have  the "left" intersection with  period k (==inconsistent with with  period)
         // , i.e. they have intersection and the start point
@@ -207,9 +165,9 @@ void SolveAmbiguity_Old(yvector< COccurrence >& Occurrences)
 
     sort (Occurrences.begin(), Occurrences.end());
     InitAmbiguousSlot(Occurrences);
-    //int CountOfAmbigousPlaces = 0;
+
     for (size_t i = 0; i + 1 < Occurrences.size(); ++i)
-        if    (Occurrences[i + 1].first < Occurrences[i].second) {
+        if (Occurrences[i + 1].first < Occurrences[i].second) {
             CPeriodSolutionWeight Solution;
             Solution.m_VirtualGroup.SetPair(Occurrences[i].first,Occurrences[i].first);
 
@@ -232,10 +190,7 @@ void SolveAmbiguity_Old(yvector< COccurrence >& Occurrences)
                 Occurrences.erase(Occurrences.begin() + start, Occurrences.begin() + end);
             };
             Occurrences.erase(Occurrences.begin() + i, Occurrences.begin() + Solution.m_Solution[0]);
-            //CountOfAmbigousPlaces++;
         };
-    //printf ("Count Of Ambiguous Places is %i\n",CountOfAmbigousPlaces);;
-
 };
 
 bool SortByRightBorderPredicate(const COccurrence& o1, const COccurrence& o2)

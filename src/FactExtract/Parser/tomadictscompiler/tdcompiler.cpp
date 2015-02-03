@@ -115,8 +115,6 @@ bool CTDCompiler::CompileGrammar(const Stroka& grammarFileName, ECompileMode mod
 bool CTDCompiler::CompileCustomGztArticles(const Stroka& articlesGztBin, ECompileMode mode)
 {
     const TStringBuf TOMITA_PREFIX = AsStringBuf("tomita:");
-    const TStringBuf TAGGER_PREFIX = AsStringBuf("tagger:");
-    const TStringBuf ALG_PREFIX = AsStringBuf("alg:");
 
     if (!PathHelper::Exists(ArticlesGztBin))
         return false;
@@ -149,7 +147,6 @@ bool CTDCompiler::CompileAuxDic(const Stroka& strFile, ECompileMode mode)
     if (m_dictIndex.CompilationRequired(strFile, binFileName, mode)) {
 
         if (!isexist(~strFile)) {
-            //Log << "Cannot find aux-dic file or corresponding binary: " << strFile << "." << Endl;
             // still return true - we can continue with empty auxdic
             return true;
         }

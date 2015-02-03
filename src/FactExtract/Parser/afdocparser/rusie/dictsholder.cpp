@@ -93,9 +93,9 @@ void CDictsHolder::Init(const Stroka& strDicPath, const Stroka& strBinPath)
             }
         }
 
-        InitGazetteer(DicPath);
+        InitGazetteer();
         if (s_bNeedAuxKwDict)
-            InitAuxKwDict(DicPath);
+            InitAuxKwDict();
         InitFactTypes();
 
         InitGazetteerTitleIndexImpl();
@@ -871,7 +871,7 @@ const CFilterStore& CDictsHolder::GetFilter(TKeyWordType type) const
     return gram == NULL ? EmptyGrammar.m_FilterStore : gram->m_FilterStore;
 }
 
-void CDictsHolder::InitAuxKwDict(const Stroka& dicsPath)
+void CDictsHolder::InitAuxKwDict()
 {
     // no locking - this method is protected
 
@@ -883,7 +883,7 @@ void CDictsHolder::InitAuxKwDict(const Stroka& dicsPath)
         ythrow yexception() << "Failed to read aux_dic";
 }
 
-void CDictsHolder::InitGazetteer(const Stroka& dicsPath)
+void CDictsHolder::InitGazetteer()
 {
     // no locking - this method is protected
 

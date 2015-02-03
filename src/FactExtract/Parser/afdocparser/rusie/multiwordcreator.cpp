@@ -329,12 +329,7 @@ void CMultiWordCreator::CreateWordIndexes(const yset<SArtPointer>&  artPointers,
         if (it == artPointers.end())
             continue;
 
-        COccurrence o;
-        o.first = pW.GetSourcePair().FirstWord();
-        o.second = pW.GetSourcePair().LastWord() + 1;
-        o.m_GrammarRuleNo = i;
-        o.m_pInputItem = 0;
-        o.m_bAmbiguous = false;
+        COccurrence o(pW.GetSourcePair().FirstWord(), pW.GetSourcePair().LastWord() + 1, i);
         multiWordsOccurrences.push_back(o);
     }
 

@@ -268,22 +268,16 @@ void CTrieHolder::UpdatePossibleOutputSymbols (const yset<size_t>& CurrentStates
 int CTrieHolder::NextState (int State, size_t TextPositionNo, TerminalSymbolType Symbol, yvector< COccurrence >& Occurrences) const
 {
     while (State!=-1 &&  (FindChild(State,Symbol) == -1))
-        State =  m_Nodes[State].m_FailureFunction;
+        State = m_Nodes[State].m_FailureFunction;
 
     if (State == -1)
-        State  = 0;
+        State = 0;
     else
         State = FindChild(State,Symbol);
 
     for (int r = State; r != -1; r = GetTerminatedPeriodNext(r)) {
         if (m_Nodes[r].m_GrammarRuleNo != -1) {
-            COccurrence C;
-            C.first = TextPositionNo - m_Nodes[r].m_Depth + 1;
-            C.second =  TextPositionNo + 1;
-            //C.m_pFinalNode = (void*)&(m_Nodes[State]);
-            C.m_pInputItem = NULL;
-            C.m_GrammarRuleNo = m_Nodes[r].m_GrammarRuleNo;
-            C.m_bAmbiguous = false;
+            COccurrence C(TextPositionNo - m_Nodes[r].m_Depth + 1, TextPositionNo + 1, m_Nodes[r].m_GrammarRuleNo);
             Occurrences.push_back(C);
         }
     };
@@ -296,7 +290,7 @@ void CTrieHolder::GetOccurrences (const TerminalString& Text, yvector< COccurren
     int r = 0;
     Occurrences.clear();
     for (size_t i=0; i<Text.size(); i++) {
-        r = NextState(r,i,Text[i],Occurrences);
+        r = NextState(r, i, Text[i], Occurrences);
     };
 };
 

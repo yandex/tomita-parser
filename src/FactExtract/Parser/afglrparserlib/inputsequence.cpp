@@ -74,12 +74,7 @@ size_t CInputSequenceGLR::ApplyGLR_Parsing (const CWorkGrammar& G, const yset<si
                 &&    !Output[i].m_bDisabled
                 &&    (Output[i].m_SymbolNo != (int)G.GetEndOfStreamSymbol())
             ) {
-            COccurrence  C;
-            C.first = Output[i].m_InputStart;
-            C.second = Output[i].m_InputEnd;
-            C.m_pInputItem = Output[i].m_pItem;
-            C.m_GrammarRuleNo = i;
-            C.m_bAmbiguous = false;
+            COccurrence C(Output[i].m_InputStart, Output[i].m_InputEnd, i, false, Output[i].m_pItem);
             Occurrences.push_back(C);
             bFound = true;
         };
