@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <fcntl.h>
+#include <unistd.h>
 
 // Заголовочные файлы из Google Protobuf
 #include <google/protobuf/io/zero_copy_stream_impl.h>
