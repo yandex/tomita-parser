@@ -19,11 +19,11 @@ const Wtroka g_strDateNonTerminal               = UTF8ToWide("@дата");
 
 struct SNumeral2Number
 {
-    Wtroka m_Cardinal; // "РґРІР°"
-    Wtroka m_Ordinal; // "РІС‚РѕСЂРѕР№"
-    Wtroka m_Adverb;
-    Wtroka m_Noun;
-    ui64 m_Integer;
+    Wtroka m_Cardinal; // количественное числительное  "два"
+    Wtroka m_Ordinal;  // порядковое числительное      "второй"
+    Wtroka m_Adverb;   // наречие                      "вдвоём"
+    Wtroka m_Noun;     // существительное              "двое"
+    ui64 m_Integer;    // числовое представление       2
     int m_Fractional;
 
     SNumeral2Number(const char* cardinal, const char* ordinal, const char* adverb, const char* noun, ui64 integer, int fract)

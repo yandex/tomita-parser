@@ -24,7 +24,7 @@ public:
     {
         if (m_Numbers.size() != 1)
             return false;
-        return    (m_Numbers[0] == 1000) ||
+        return  (m_Numbers[0] == 1000) ||
                 (m_Numbers[0] == 1000000) ||
                 (m_Numbers[0] == 1000000000LL) ||
                 (m_Numbers[0] == 1000000000000LL);
@@ -38,7 +38,7 @@ public:
 
 public:
     yvector<double> m_Numbers;
-    int    m_iMainWord;
+    int m_iMainWord;
     bool m_bSingle; //то есть не может быть продолжено, типа 3-тысячный
 };
 
@@ -79,7 +79,7 @@ protected:
     bool IsFree(int iW);
 
 protected:
-    yvector<TSharedPtr<CWord> >&  m_words;
-    yvector<CNumber>&    m_numbers;
+    yvector<TSharedPtr<CWord> >& m_words;
+    yvector<CNumber>& m_numbers;
     CWordSequence::TSharedVector& m_wordSequences;
 };

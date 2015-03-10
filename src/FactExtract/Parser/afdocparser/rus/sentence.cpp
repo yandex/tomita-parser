@@ -162,7 +162,13 @@ void CSentence::FindNames(yvector<CFioWordSequence>& foundNames, yvector<int>& p
         InitNameTypes();
         CNameFinder nameFinder(m_Words);
         nameFinder.Run(foundNames, potentialSurnames);
-    } catch (yexception& e) { PrintError("Error in CSentence::FindNames()", &e); throw; } catch (...) { PrintError("Error in CSentence::FindNames()", NULL); throw; }
+    } catch (yexception& e) {
+        PrintError("Error in CSentence::FindNames()", &e);
+        throw;
+    } catch (...) {
+        PrintError("Error in CSentence::FindNames()", NULL);
+        throw;
+    }
 }
 
 void CSentence::AddFIO(yset<Wtroka>& fioStrings, const CFIOOccurenceInText& wordsPairInText, bool bIndexed)
@@ -316,8 +322,13 @@ void CSentence::BuildNumbers()
     try {
         CNumberProcessor numberProcessor(m_words, m_Numbers, m_wordSequences);
         numberProcessor.Run();
-    } catch (yexception& e) { PrintError("Error in CSentence::BuildNumbers()", &e); throw;
-    } catch (...) { PrintError("Error in CSentence::BuildNumbers()", NULL); throw; }
+    } catch (yexception& e) {
+         PrintError("Error in CSentence::BuildNumbers()", &e);
+         throw;
+    } catch (...) {
+         PrintError("Error in CSentence::BuildNumbers()", NULL);
+         throw;
+    }
 }
 
 bool CSentence::GetWSLemmaString(Wtroka& sLemmas, const CWordSequence& ws, bool bLem) const
@@ -353,7 +364,12 @@ Wtroka CSentence::BuildDates()
         CDateProcessor dateProcessor(m_Words, m_wordSequences);
         dateProcessor.Run();
         return Wtroka();
-    } catch (yexception& e) { PrintError("Error in CSentence::BuildDates()", &e); throw;
-    } catch (...) { PrintError("Error in CSentence::BuildDates()", NULL); throw; }
+    } catch (yexception& e) {
+        PrintError("Error in CSentence::BuildDates()", &e);
+        throw;
+    } catch (...) {
+        PrintError("Error in CSentence::BuildDates()", NULL);
+        throw;
+    }
 }
 
