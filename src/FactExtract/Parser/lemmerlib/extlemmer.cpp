@@ -170,7 +170,11 @@ int TSimpleLemmer::GetFormFlexGramNum(MystemFormHandle* h) {
 
 
 void TSimpleLemmer::DeleteAnalyses(MystemAnalysesHandle *analyses) {
-      GET_FUNC(Lib, MystemDeleteAnalyses)(analyses);
+    GET_FUNC(Lib, MystemDeleteAnalyses)(analyses);
+}
+
+void TSimpleLemmer::DeleteForms(MystemFormsHandle *forms) {
+    GET_FUNC(Lib, MystemDeleteForms)(forms);  
 }
 
 size_t AnalyzeWord(const TChar* word, size_t len, TWLemmaArray& out, TLangMask langmask, const docLanguage* doclangs, const TAnalyzeWordOpt& opt) {
@@ -178,7 +182,8 @@ size_t AnalyzeWord(const TChar* word, size_t len, TWLemmaArray& out, TLangMask l
 }
 
 size_t Generate(const TSimpleLemma &lemma, TWordformArray& out, const char* needed_grammar) {
-    TAutoPtr<TFormGenerator> gen = lemma.Generator(GetNewDummyGrammarFiltr(needed_grammar));
+    TClueGrammarFiltr grm_filtr(needed_grammar);
+    TAutoPtr<TFormGenerator> gen = lemma.Generator(&grm_filtr);
     TSimpleWordform form;
     while (gen->GenerateNext(form))
         out.push_back(form);

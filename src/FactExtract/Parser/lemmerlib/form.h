@@ -28,7 +28,6 @@ public:
     void ConstructText(Wtroka& text) const;
     void ConstructForm(TSimpleWordform& form) const;
 
-
 protected:
     inline TSimpleWordformKit()
         : Lemma(NULL)
@@ -46,7 +45,6 @@ protected:
     const TSimpleLemma* Lemma;      // should outlive @this
     MystemFormHandle* FormHandle;
     Wtroka DefaultText;
-
 
     const char* FlexGrammar;
 };
@@ -77,6 +75,7 @@ class TSimpleWordformIterator: public ISimpleWordformIterator {
 public:
     explicit TSimpleWordformIterator(const TSimpleLemma& lemma);
 
+    virtual ~TSimpleWordformIterator();
 
     // implements IWordformIterator
 
@@ -140,6 +139,7 @@ namespace NLemmer {
     class TClueGrammarFiltr: public TGrammarFiltr {
     public:
         TClueGrammarFiltr(const Stroka neededGr[]);
+        TClueGrammarFiltr(const char* neededGr);
         void SetLemma(const TSimpleLemma& lemma);
         bool IsProperStemGr() const {
             return !FlexGram.empty();

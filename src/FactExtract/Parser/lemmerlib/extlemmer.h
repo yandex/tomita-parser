@@ -24,6 +24,7 @@ public:
     MystemFormHandle* GetFormHandle(MystemFormsHandle* h, int i);
 
     void DeleteAnalyses(MystemAnalysesHandle *analyses);
+    void DeleteForms(MystemFormsHandle *forms);
 
     int GetLemmaQuality(MystemLemmaHandle* h);
     int GetFormsCount(MystemFormsHandle* h);

@@ -60,13 +60,16 @@ static bool InitFlexGrammar(const char* stemGr, const char* needGram, Stroka& bu
     return true;
 }
 
-TClueGrammarFiltr::TClueGrammarFiltr(const Stroka neededGr[])
-{
+TClueGrammarFiltr::TClueGrammarFiltr(const Stroka neededGr[]) {
     for (const Stroka* ps = neededGr; !ps->empty(); ++ps)
         Grammar.push_back(*ps);
     if (Grammar.empty())
         Grammar.push_back("");
 };
+
+TClueGrammarFiltr::TClueGrammarFiltr(const char* neededGr) {
+    Grammar.push_back(neededGr);
+}
 
 void TClueGrammarFiltr::SetLemma(const TSimpleLemma& lemma) {
     FlexGram.clear();
@@ -113,6 +116,11 @@ TSimpleWordformIterator::TSimpleWordformIterator(const TSimpleLemma& lemma)
     Current = &Form;
 }
 
+TSimpleWordformIterator::~TSimpleWordformIterator() {
+    if (NULL != FormsHandle)
+        Singleton<NLemmer::TSimpleLemmer>()->DeleteForms(FormsHandle);
+}
+
 void TSimpleWordformIterator::operator++() {
     MystemFormHandle *fh = Singleton<NLemmer::TSimpleLemmer>()->GetFormHandle(FormsHandle, FormsPos);
     size_t flexCount = Singleton<NLemmer::TSimpleLemmer>()->GetFormFlexGramNum(fh);
@@ -138,6 +146,8 @@ void TSimpleWordformKit::SetDefaultText(const TSimpleLemma& lemma, const TWtring
     YASSERT(NULL != FormsHandle);
     FormHandle = Singleton<NLemmer::TSimpleLemmer>()->GetFormHandle(FormsHandle, 0);
     YASSERT(NULL != FormHandle);
+
+    Singleton<NLemmer::TSimpleLemmer>()->DeleteForms(FormsHandle);
 }
 
 TWtringBuf TSimpleWordformKit::ConstructText(TChar* buffer, size_t bufferSize) const {
@@ -179,6 +189,8 @@ TSimpleWordformKit::TSimpleWordformKit(const TSimpleLemma& lemma, size_t flexInd
     YASSERT(NULL != FormsHandle);
     FormHandle = Singleton<NLemmer::TSimpleLemmer>()->GetFormHandle(FormsHandle, 0);
     YASSERT(NULL != FormHandle);
+
+    Singleton<NLemmer::TSimpleLemmer>()->DeleteForms(FormsHandle);
 }
 
 TSimpleWordformKit::TSimpleWordformKit(const TSimpleLemma& lemma)
@@ -197,8 +209,9 @@ TSimpleWordformKit::TSimpleWordformKit(const TSimpleLemma& lemma)
     YASSERT(NULL != FormsHandle);
     FormHandle = Singleton<NLemmer::TSimpleLemmer>()->GetFormHandle(FormsHandle, 0);
     YASSERT(NULL != FormHandle);
-}
 
+    Singleton<NLemmer::TSimpleLemmer>()->DeleteForms(FormsHandle);
+}
 
 const char* TSimpleWordformKit::GetFlexGram() const {
     return FlexGrammar;
