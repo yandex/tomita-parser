@@ -57,8 +57,8 @@ void CSimpleXMLWriter::Open(Stroka path, Stroka strRoot, Stroka strFirstTag, boo
     YASSERT(m_ActiveOutput != NULL);
 
     if (!bAppend || !bFileExists) {
-        *m_ActiveOutput << "<?xml version='1.0' encoding='" << EncodingName() << "'?>";
-        *m_ActiveOutput << strFirstTag;
+        *m_ActiveOutput << "<?xml version='1.0' encoding='" << EncodingName() << "'?>" << Endl;
+        *m_ActiveOutput << strFirstTag << Endl;
     }
 
     m_piDoc.Reset("1.0");

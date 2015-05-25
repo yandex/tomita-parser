@@ -9,6 +9,7 @@
 
 #include <FactExtract/Parser/afdocparser/afdocrusparserielib/afdocrusie.h>
 #include <FactExtract/Parser/afdocparser/rusie/factsxmlwriter.h>
+#include <FactExtract/Parser/afdocparser/rusie/factsrdfwriter.h>
 #include <FactExtract/Parser/afdocparser/rusie/afdocplaintextwriter.h>
 
 

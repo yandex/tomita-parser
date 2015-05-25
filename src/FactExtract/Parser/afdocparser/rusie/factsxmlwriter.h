@@ -111,3 +111,5 @@ private:
     TOutputStream* m_pErrorStream;
     TMutex m_SaveFactsCS;
 };
+
+bool GetFirstLastWord(int& iFirstWord, int& iLastWord, const CWordSequence* ws);

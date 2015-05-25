@@ -60,6 +60,7 @@ message TTextMinerConfig {
       proto = 2;
       mapreduce = 3;
       json = 4;
+      rdf = 5;
     }
     
     optional string File = 1 [default = ""];

@@ -57,6 +57,7 @@ private:
 
     THolder<CFactsXMLWriter> XmlWriter;
     THolder<CFactsProtoWriter> ProtoWriter;
+    THolder<CFactsRDFWriter> RdfWriter;
     THolder<CAfDocPlainTextWriter> PlainTextWriter;
     THolder<CPrettySitWriter> PrettyXMLWriter;
 

@@ -129,6 +129,9 @@ void CProcessor::InitOutput(const CCommonParm& params)
         PlainTextWriter.Reset(new CAfDocPlainTextWriter(params.GetOutputFileName(), params.GetOutputEncoding(), ParserOptionsPtr->m_ParserOutputOptions));
         PlainTextWriter->SetAppend(params.IsAppendFdo());
         PlainTextWriter->SetFileName(params.GetOutputFileName());
+    } else if ("rdf" == params.GetOutputFormat()) {
+        RdfWriter.Reset(new CFactsRDFWriter(ParserOptionsPtr->m_ParserOutputOptions, params.GetOutputFileName(), params.GetOutputEncoding()));
+
     } else if ("proto" == params.GetOutputFormat() || "json" == params.GetOutputFormat()) {
         ProtoWriter.Reset(new CFactsProtoWriter(ParserOptionsPtr->m_ParserOutputOptions, params.GetOutputFileName(), params.IsAppendFdo(), params.IsWriteLeads(), params.IsCollectEqualFacts()));   // stream mode
         if ("json" == params.GetOutputFormat())
@@ -264,6 +267,9 @@ bool CProcessor::OutputFacts(CTextProcessor& text)
 
     if (XmlWriter.Get() != NULL)
         XmlWriter->AddFacts(text, attr.m_strUrl);
+
+    if (RdfWriter.Get() != NULL)
+        RdfWriter->AddFacts(text, attr.m_strUrl);
 
     if (ProtoWriter.Get() != NULL)
         ProtoWriter->AddFacts(text, attr.m_strUrl);

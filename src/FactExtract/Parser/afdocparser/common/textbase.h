@@ -71,6 +71,10 @@ public:
     virtual void ResetPrimitives(void);
     virtual void FreeData(void);
 
+    Wtroka GetRawText() const {
+        return m_strText;
+    }
+
     virtual Wtroka GetText(const CPrimitive &prim) const;
     virtual Wtroka GetText(CPrimGroup &group) const;
     void BuildPrimGroupText(const CPrimGroup &group, Wtroka& str) const;

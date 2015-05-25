@@ -247,6 +247,9 @@ Stroka CCommonParm::GetOutputFormat() const {
             case TTextMinerConfig::TOutputParams::mapreduce:
                 return Stroka("mapreduce");
 
+            case TTextMinerConfig::TOutputParams::rdf:
+                return Stroka("rdf");
+
             default:
                 ythrow yexception() << "This type of input isn't supported";
         }

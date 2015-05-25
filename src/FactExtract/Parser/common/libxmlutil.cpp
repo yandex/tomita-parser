@@ -45,7 +45,7 @@ void TNodePtrBase::SaveToStream(TOutputStream* output, ECharset encoding) const 
     const char* encodingName = NameByCharset(encoding);
     xmlOutputBufferPtr buf = xmlOutputBufferCreateIO(WriteXmlBufToStream, CloseStreamNoOp,
         output, xmlFindCharEncodingHandler(encodingName));
-    xmlNodeDumpOutput(buf, Get()->doc, Get(), 0, 0, encodingName);
+    xmlNodeDumpOutput(buf, Get()->doc, Get(), 0, 1, encodingName);
     xmlOutputBufferClose(buf);
 }
 

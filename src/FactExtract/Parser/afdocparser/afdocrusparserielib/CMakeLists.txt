@@ -73,6 +73,7 @@ SRCS(
     ../rusie/factscollection.cpp
     ../rusie/terminalsassigner.cpp
     ../rusie/factsxmlwriter.cpp
+    ../rusie/factsrdfwriter.cpp
     ../rusie/factsproto.cpp
     ../rusie/textprocessor.cpp
     ../rusie/filtercheck.cpp
