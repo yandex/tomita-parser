@@ -24,6 +24,8 @@ CCommonGrammarInterpretation::CCommonGrammarInterpretation(const CWordVector& wo
 CCommonGrammarInterpretation::~CCommonGrammarInterpretation()
 {}
 
+Stroka CreateUid();
+
 bool CCommonGrammarInterpretation::HasAllNecessaryFields(CFactFields& fact, const CWordsPair& artificialPair) const
 {
     const fact_type_t* pFactType = &GlobalDictsHolder->RequireFactType(fact.GetFactName());
@@ -50,6 +52,13 @@ bool CCommonGrammarInterpretation::HasAllNecessaryFields(CFactFields& fact, cons
                             CTextWS ws;
                             ws.SetArtificialPair(artificialPair);
                             AddTextFactFieldValue(ws, field_descr);
+                            fact.AddValue(field_descr.m_strFieldName, ws, false);
+                            bAdded = true;
+                            break;
+                        } else if (field_descr.m_strFieldName == "id") {
+                            CTextWS ws;
+                            ws.SetArtificialPair(artificialPair);
+                            ws.AddLemma(SWordSequenceLemma(CharToWide(CreateUid())));
                             fact.AddValue(field_descr.m_strFieldName, ws, false);
                             bAdded = true;
                             break;
