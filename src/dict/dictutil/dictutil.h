@@ -419,12 +419,3 @@ int Log2ii(ui32 value);
 
 double Nan();
 float Nanf();
-
-////////////////////////////////////////////////////////////////////////////////
-//
-// GUID
-//
-
-/** Creates UID in format "{ffffffff-ffff-ffff-ffff-ffffffffffff}" */
-Stroka CreateUid();
-bool IsUid(const Stroka& str);

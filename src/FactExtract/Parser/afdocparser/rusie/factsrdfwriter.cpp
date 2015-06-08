@@ -1,4 +1,5 @@
 #include <util/string/cast.h>
+#include <util/random/random.h>
 
 #include "factsrdfwriter.h"
 #include "textprocessor.h"
@@ -17,6 +18,8 @@ CFactsRDFWriter::CFactsRDFWriter(const CParserOptions::COutputOptions& parserOut
 //CFactsRDFWriter::CFactsRDFWriter(const CParserOptions::COutputOptions& parserOutputOptions, TOutputStream* outStream, ECharset encoding) {
 //
 //}
+
+Stroka CreateUid();
 
 void CFactsRDFWriter::AddFacts(const CTextProcessor& pText, const Stroka& url, const Stroka& siteUrl, const Stroka& strArtInLink, const SKWDumpOptions* pTask) {
     if (pText.GetFactsCollection().GetFactsCount() == 0)
@@ -50,6 +53,9 @@ void CFactsRDFWriter::AddFactsToStream(TOutputStream& out_stream, const CTextPro
         TXmlNodePtr piFact = WriteFact(factAddress, iFactID, pText, iStart, iEnd/*, leadGenerator*/);
         if (piFact.Get() != NULL) {
             FactIdMap[factAddress] = iFactID++;
+
+            Stroka uuid = Stroka("bnode") + CreateUid();
+            piFact.AddAttr("rdf:nodeID", uuid);
             GetXMLRoot().AddChild(piFact.Release());
 
             // Instance annotation
@@ -69,7 +75,7 @@ void CFactsRDFWriter::AddFactsToStream(TOutputStream& out_stream, const CTextPro
             buffer[len] = 0;
             annEnd.AddNewTextNodeChild(CharToWide(buffer));
 
-            annRef.AddAttr("rdf:nodeID", "bnode-...");
+            annRef.AddAttr("rdf:nodeID", uuid);
 
             annInner.AddChild(annStart.Release());
             annInner.AddChild(annEnd.Release());
@@ -79,28 +85,6 @@ void CFactsRDFWriter::AddFactsToStream(TOutputStream& out_stream, const CTextPro
             annotationRoot.AddChild(ann.Release());
         }
     }
-
-//    TXmlNodePtr document("document");
-//    document.AddAttr("url", url);
-//    document.AddAttr("di", pText.GetAttributes().m_iDocID);
-//    document.AddAttr("bi", pText.GetAttributes().m_iSourceID);
-
-//    Stroka strDate;
-//    if (!((pText.GetDateFromDateField().GetYear() == 1970) &&
-//        (pText.GetDateFromDateField().GetMonth() == 1) &&
-//        (pText.GetDateFromDateField().GetDay() == 1)))
-//        strDate = pText.GetDateFromDateField().Format("%Y-%m-%d");
-//    document.AddAttr("date", strDate);
-
-    //CLeadGenerator leadGenerator(pText, pText.GetAttributes().m_iDocID, url, Encoding);
-
-    //document.AddChild(WriteFacts(pText, leadGenerator));
-
-//    if (IsWriteSimilarFacts)
-//        document.AddChild(WriteEqualFacts(pText));
-
-//    if (IsWriteLeads)
-//        document.AddChild(WriteLeads(pText, leadGenerator));
 
     GetXMLRoot().AddChild(annotationRoot.Release());
     SaveSubTreeToStream(out_stream);
@@ -168,18 +152,6 @@ TXmlNodePtr CFactsRDFWriter::WriteFact(const SFactAddress& factAddress, int iFac
 
     piFact.AddAttr("FactID", iFactId);
 
-//    if (!pFactType->m_bNoLead) {
-//        //получаем id лида и строчку с аттрибутами, кторые надо подсвечивать именно для этого факта
-//        yvector<CLeadGenerator::CAttrWP> attrs;
-//        int iLeadID = leadGenerator.AddFact(factAddress, attrs);
-//        piFact.AddAttr("LeadID", iLeadID)
-//              .AddAttr("FieldsInfo", CLeadGenerator::JoinAttrs(attrs));
-//    }
-
-//    if (pText.GetAttributes().m_TitleSents.first <= factAddress.m_iSentNum &&
-//        pText.GetAttributes().m_TitleSents.second >= factAddress.m_iSentNum)
-//        piFact.AddAttr("tl", factAddress.m_iSentNum);
-
     const CWordVector& rRusWords = pText.GetSentenceProcessor(factAddress.m_iSentNum)->GetRusWords();
     const CWordsPair& rWP = rRusWords.GetWord((SWordHomonymNum)(factAddress)).GetSourcePair();
 
@@ -190,10 +162,6 @@ TXmlNodePtr CFactsRDFWriter::WriteFact(const SFactAddress& factAddress, int iFac
         iEnd = w2.m_pos + w2.m_len;
     }
 
-//    piFact.AddAttr("sn", factAddress.m_iSentNum)
-//          .AddAttr("fw", rWP.FirstWord())
-//          .AddAttr("lw", rWP.LastWord());
-
     return piFact;
 }
 
@@ -203,26 +171,6 @@ void CFactsRDFWriter::AddTextAttribute(const CTextProcessor& pText, const CTextW
 
         piChild.AddNewTextNodeChild(strVal);
         piChild.AddAttr("xml:lang", IsoNameByLanguage(pText.GetLang()));
-
-//        if (fieldDescr.m_bSaveTextInfo) //"info", написанное в '[' ']', в fact_types.cxx
-//            piChild.AddAttr(g_strInfoAttr, pFieldWS->GetMainWordsDump());
-
-//        yset<Stroka>::const_iterator it = fieldDescr.m_options.begin();
-//        for (; it != fieldDescr.m_options.end(); ++it)
-//            piChild.AddAttr(it->c_str(), "");
-
-//        Wtroka sGeoArts;
-//        if (GetGeoArts(pText, pFieldWS, pSent, strFactName, sGeoArts, factAddress))
-//            piChild.AddAttr(g_strGeoArtAttr, sGeoArts);
-
-//        int iFirstWord  = -1, iLastWord = -1;
-//        if (GetFirstLastWord(iFirstWord, iLastWord, pFieldWS)) {
-//            const CWordVector& rRusWords = pText.GetSentenceProcessor(factAddress.m_iSentNum)->GetRusWords();
-//            const CWord& w1 = rRusWords.GetAnyWord(iFirstWord);
-//            const CWord& w2 = rRusWords.GetAnyWord(iLastWord);
-//            piChild.AddAttr("pos", w1.m_pos)
-//                   .AddAttr("len", w2.m_pos + w2.m_len - w1.m_pos);
-//        }
     }
 }
 
@@ -238,4 +186,17 @@ void CFactsRDFWriter::SetErrorStream(TOutputStream* errorStream) {
 
 void CFactsRDFWriter::PrintError(const Stroka& str) {
     (*m_pErrorStream) << str << Endl;
+}
+
+Stroka CreateUid() {
+    Stroka s;
+    for (size_t i = 0; i < 16; i++) {
+        ui8 x = RandomNumber<ui8>();
+        if (3 == i || 5 == i || 7 == i || 9 == i)
+            fcat(s, "%02hhX-", x);
+        else
+            fcat(s, "%02hhX", x);
+    }
+
+    return s;
 }
