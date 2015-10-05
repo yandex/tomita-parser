@@ -1,5 +1,6 @@
 #include "homonym.h"
 #include <FactExtract/Parser/afdocparser/common/wordsequence.h>
+#include <util/charset/recyr.hh>
 
 
 CHomonym::CHomonym(docLanguage lang, const Wtroka& sLemma)
@@ -297,7 +298,7 @@ void CHomonym::PrintGrammems(const TGramBitSet& grammems, TOutputStream& stream,
 {
     Stroka grStr = grammems.ToString(", ");
     if (encoding != CODES_WIN)
-        grStr = WideToChar(CharToWide(grStr, CODES_WIN), encoding); // TODO better use Recode
+        grStr = Recode(encoding, CODES_WIN, grStr);
     stream << grStr;
 }
 
