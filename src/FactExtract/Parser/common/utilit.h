@@ -17,24 +17,6 @@ using ::google::protobuf::strings::Substitute;
 
 bool RequiresSpace(const Wtroka& w1, const Wtroka& w2);
 
-//  =============  Punctuation Letters ======================
-
-const ui8 Auml  = 196; // "Д"
-const ui8 auml  = 228; // "д"
-const ui8 Uuml  = 220; // "Ь"
-const ui8 uuml  = 252; // "ь"
-const ui8 Ouml  = 214; // "Ц"
-const ui8 ouml  = 246; // "ц"
-const ui8 szlig = 223; //"Я"
-const ui8 Nu    = 181;   // "ч"
-const ui8 agrave = 224; //"р"
-const ui8 egrave = 232; //"ш"
-const ui8 eacute = 233; //"щ"
-
-const ui8 LowerJO  = 0xB8;
-const ui8 UpperJO  = 0xA8;
-const ui8 Apostrophe  = 39;
-
 typedef enum { morphUnknown = 0, morphRussian = 1, morphEnglish = 2, morphGerman = 3 } MorphLanguageEnum;
 
 void WriteToLogFile(const Stroka& sGrammarFileLog, Stroka& str, bool bRW = false);
