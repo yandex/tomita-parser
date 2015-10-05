@@ -2,7 +2,6 @@
 
 
 #include "libxmlutil.h"
-#include "utilit.h"
 #include <util/system/mutex.h>
 #include <util/stream/file.h>
 #include <util/generic/stroka.h>
@@ -27,7 +26,7 @@ protected:
     void SaveSubTreeToStream(TOutputStream& stream);
 
     Stroka EncodeText(const Wtroka& text) const {
-        return NStr::Encode(text, Encoding);
+        return WideToChar(text, Encoding);
     }
 
     const char* EncodingName() {

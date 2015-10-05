@@ -897,7 +897,7 @@ void CMultiWordCreator::PrintWordsFeatures(TOutputStream &stream, ECharset encod
     stream << "==================== multiwords ====================\n\n";
     for (ymap<Wtroka, yset<TKeyWordType> >::const_iterator it = kwtypes.begin(); it != kwtypes.end(); ++it) {
         const Wtroka& word = it->first;
-        stream << NStr::Encode(word, encoding) << ": ";
+        stream << WideToChar(word, encoding) << ": ";
         for (yset<TKeyWordType>::const_iterator kwt = it->second.begin(); kwt != it->second.end(); ++kwt)
             stream << (*kwt)->name() << ", ";
         stream << "\n\t";
@@ -907,7 +907,7 @@ void CMultiWordCreator::PrintWordsFeatures(TOutputStream &stream, ECharset encod
         if (titles_it != titles.end()) {
             const yset<Wtroka>& articles = titles_it->second;
             for (yset<Wtroka>::const_iterator art = articles.begin(); art != articles.end(); ++art)
-                stream << NStr::Encode(*art, encoding) << ", ";
+                stream << WideToChar(*art, encoding) << ", ";
             titles.erase(titles_it);
         }
         stream << "\n";
@@ -915,10 +915,10 @@ void CMultiWordCreator::PrintWordsFeatures(TOutputStream &stream, ECharset encod
 
     ymap<Wtroka, yset<Wtroka> >::iterator titles_it = titles.begin();
     for (; titles_it != titles.end(); ++titles_it) {
-        stream << NStr::Encode(titles_it->first, encoding) << ": ";
+        stream << WideToChar(titles_it->first, encoding) << ": ";
         const yset<Wtroka>& articles = titles_it->second;
         for (yset<Wtroka>::const_iterator art = articles.begin(); art != articles.end(); ++art)
-            stream << NStr::Encode(*art, encoding) << ", ";
+            stream << WideToChar(*art, encoding) << ", ";
         stream << "\n";
     }
 

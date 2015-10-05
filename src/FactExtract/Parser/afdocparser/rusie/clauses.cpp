@@ -1954,20 +1954,20 @@ void CClause::PrintNodeInfo(TOutputStream& stream, ECharset encoding) const
     for (size_t i = 0; i < m_Types.size(); i++) {
         stream << "  ";
         if (m_Types[i].m_NodeNum.IsValid())
-            stream << "node: \"" << NStr::Encode(m_Words[m_Types[i].m_NodeNum].GetLemma(), encoding) << "\" ";
+            stream << "node: \"" << WideToChar(m_Words[m_Types[i].m_NodeNum].GetLemma(), encoding) << "\" ";
 
         stream << "POS: \"";
         CHomonym::PrintGrammems(m_Types[i].m_NodePOS, stream, encoding);
-        stream << "\" type: \"" << NStr::Encode(GlobalGramInfo->ClauseType2Str(m_Types[i].m_Type), encoding) << "\" ";
+        stream << "\" type: \"" << WideToChar(GlobalGramInfo->ClauseType2Str(m_Types[i].m_Type), encoding) << "\" ";
 
         if (m_Types[i].m_Type == WantsVal)
-            stream << "(" << NStr::Encode(GlobalGramInfo->Modality2Str(m_Types[i].m_Modality), encoding) << ")";
+            stream << "(" << WideToChar(GlobalGramInfo->Modality2Str(m_Types[i].m_Modality), encoding) << ")";
 
         stream << Endl;
         for (size_t j = 0; j < m_Types[i].m_Vals.size(); j++) {
             if (m_Types[i].m_Vals[j].m_Actant.IsValid()) {
                 const CHomonym& hom = m_Words[m_Types[i].m_Vals[j].m_Actant];
-                stream << "             valency: \"" << NStr::Encode(hom.GetLemma(), encoding) << " \"" << Endl;
+                stream << "             valency: \"" << WideToChar(hom.GetLemma(), encoding) << " \"" << Endl;
             }
         }
     }
@@ -1978,11 +1978,11 @@ void CClause::PrintConjsInfo(TOutputStream& stream, ECharset encoding) const
 {
     DECLARE_STATIC_RUS_WORD(Header, " Союзы:");
     if (m_Conjs.size()) {
-        stream << NStr::Encode(Header, encoding) << Endl;
+        stream << WideToChar(Header, encoding) << Endl;
         for (size_t i = 0; i < m_Conjs.size(); i++) {
             const CHomonym& h = m_Words[m_Conjs[i].m_WordNum];
             stream << "  ";
-            stream << NStr::Encode(h.GetLemma(), encoding) << "\" POS: \"";
+            stream << WideToChar(h.GetLemma(), encoding) << "\" POS: \"";
             CHomonym::PrintGrammems(MakeMask(m_Conjs[i].m_Type), stream, encoding);
             stream << "\"" << Endl;
         }
@@ -1994,21 +1994,21 @@ void CClause::Print(TOutputStream& stream, ECharset encoding) const
     for (size_t i = 0; i < m_Types.size(); i++) {
         stream << "  ";
         if (m_Types[i].m_NodeNum.IsValid())
-            stream << "node: \"" << NStr::Encode(m_Words[m_Types[i].m_NodeNum].GetLemma(), encoding) << "\" ";
+            stream << "node: \"" << WideToChar(m_Words[m_Types[i].m_NodeNum].GetLemma(), encoding) << "\" ";
 
         stream << "POS: \"";
         CHomonym::PrintGrammems(m_Types[i].m_NodePOS, stream, encoding);
-        stream << "\" type: \"" << NStr::Encode(GlobalGramInfo->ClauseType2Str(m_Types[i].m_Type), encoding) << "\" ";
+        stream << "\" type: \"" << WideToChar(GlobalGramInfo->ClauseType2Str(m_Types[i].m_Type), encoding) << "\" ";
 
         if (m_Types[i].m_Type == WantsVal)
-            stream << "(" << NStr::Encode(GlobalGramInfo->Modality2Str(m_Types[i].m_Modality), encoding) << ")";
+            stream << "(" << WideToChar(GlobalGramInfo->Modality2Str(m_Types[i].m_Modality), encoding) << ")";
 
         stream << Endl;
 
         for (size_t j = 0; j < m_Types[i].m_Vals.size(); ++j)
             if (m_Types[i].m_Vals[j].m_Actant.IsValid()) {
                 const CHomonym& hom = m_Words[m_Types[i].m_Vals[j].m_Actant];
-                stream << "     valency: \"" << NStr::Encode(hom.GetLemma(), encoding) << " \"" << Endl;
+                stream << "     valency: \"" << WideToChar(hom.GetLemma(), encoding) << " \"" << Endl;
             }
     }
 
@@ -2016,11 +2016,11 @@ void CClause::Print(TOutputStream& stream, ECharset encoding) const
     DECLARE_STATIC_RUS_WORD(Text2, "     Союз: \"");
 
     if (m_Conjs.size()) {
-        stream << NStr::Encode(Text1, encoding) << Endl;
+        stream << WideToChar(Text1, encoding) << Endl;
         for (size_t i = 0; i < m_Conjs.size(); i++) {
             const CHomonym& h = m_Words[m_Conjs[i].m_WordNum];
             stream << "  ";
-            stream << NStr::Encode(Text2, encoding) << NStr::Encode(h.GetLemma(), encoding) << "\" POS: \"";
+            stream << WideToChar(Text2, encoding) << WideToChar(h.GetLemma(), encoding) << "\" POS: \"";
             if (m_Conjs[i].m_Type == gInvalid)
                 stream << "gInvalid";
                     // Союзы "если", "якобы" не имеют граммем, отличных от gConjunction
@@ -2236,26 +2236,26 @@ void CClause::PrintType(TOutputStream& stream, int iType, ECharset encoding)
     SClauseType& clType = m_Types[iType];
 
     if (clType.m_NodeNum.IsValid())
-        stream << "node: \"" << NStr::Encode(m_Words[clType.m_NodeNum].GetLemma(), encoding) << "\" ";
+        stream << "node: \"" << WideToChar(m_Words[clType.m_NodeNum].GetLemma(), encoding) << "\" ";
 
     stream << "POS: \"";
     CHomonym::PrintGrammems(clType.m_NodePOS, stream, encoding);
-    stream << "\" type: \"" << NStr::Encode(GlobalGramInfo->ClauseType2Str(clType.m_Type), encoding) << "\" ";
+    stream << "\" type: \"" << WideToChar(GlobalGramInfo->ClauseType2Str(clType.m_Type), encoding) << "\" ";
 
     if (clType.m_Type == WantsVal)
-        stream << "(" << NStr::Encode(GlobalGramInfo->Modality2Str(clType.m_Modality), encoding) << ")";
+        stream << "(" << WideToChar(GlobalGramInfo->Modality2Str(clType.m_Modality), encoding) << ")";
     stream << Endl;
 
     for (size_t j = 0; j < clType.m_Vals.size(); j++) {
         if (clType.m_Vals[j].m_Actant.IsValid()) {
             const CHomonym& hom = m_Words[clType.m_Vals[j].m_Actant];
-            stream << "     valency: \"" << NStr::Encode(hom.GetLemma(), encoding) << " \"" << Endl;
+            stream << "     valency: \"" << WideToChar(hom.GetLemma(), encoding) << " \"" << Endl;
         }
     }
 
     for (size_t k = 0; k < m_Conjs.size(); k++) {
         SConjType& conj = m_Conjs[k];
-        stream << "Conj: " << "\"" << NStr::Encode(m_Words[conj.m_WordNum].GetLemma(), encoding) << "\" ";
+        stream << "Conj: " << "\"" << WideToChar(m_Words[conj.m_WordNum].GetLemma(), encoding) << "\" ";
         stream << "ConjPOS: " << "\"";
         CHomonym::PrintGrammems(TGramBitSet(conj.m_Type), stream, encoding);
         stream << "\"";

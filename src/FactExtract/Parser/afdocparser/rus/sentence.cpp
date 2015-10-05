@@ -94,7 +94,7 @@ Stroka CSentence::ToHTMLColorString(const yvector<CWordsPair>& wp, const Stroka&
                 str += Substitute("<font color=\"$0\">", sColor);
         if (i > 0 && (!pW->IsPunct() || pW->IsOpenBracket() || pW->IsCloseBracket()))
             str += " ";
-        str += NStr::Encode(pW->GetOriginalText(), encoding);
+        str += WideToChar(pW->GetOriginalText(), encoding);
         for (size_t j = 0; j < wp.size(); ++j)
             if (wp[j].LastWord() == (int)i)
                 str += "</font>";

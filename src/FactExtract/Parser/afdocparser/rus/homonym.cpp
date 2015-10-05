@@ -287,7 +287,7 @@ Stroka CHomonym::GetLabelsString(ECharset encoding) const
         s = " labels = (";
     yset<Wtroka>::const_iterator it = m_Labels.begin();
     for (; it != m_Labels.end(); ++it)
-        s += NStr::Encode(*it, encoding);
+        s += WideToChar(*it, encoding);
 
     s += ")";
     return s;
@@ -297,7 +297,7 @@ void CHomonym::PrintGrammems(const TGramBitSet& grammems, TOutputStream& stream,
 {
     Stroka grStr = grammems.ToString(", ");
     if (encoding != CODES_WIN)
-        grStr = NStr::Encode(NStr::Decode(grStr, CODES_WIN), encoding);
+        grStr = WideToChar(CharToWide(grStr, CODES_WIN), encoding); // TODO better use Recode
     stream << grStr;
 }
 
@@ -322,7 +322,7 @@ void CHomonym::Print(TOutputStream& stream, const Stroka& strKwType, ECharset en
     if (strKwType.size())
         s = Substitute(" (<b>$0</b>) ", strKwType);
 
-    stream << "  " << NStr::Encode(GetShortLemma(), encoding) << " ";
+    stream << "  " << WideToChar(GetShortLemma(), encoding) << " ";
     PrintFormGrammems(stream, encoding);
     stream << s << GetLabelsString(encoding) << Endl;
 }
@@ -336,7 +336,7 @@ void CHomonym::Print(TOutputStream& stream, ECharset encoding) const
 
     if (IsDeleted())
         s += "[deleted]";
-    stream << NStr::Encode(GetShortLemma(), encoding) << " ";
+    stream << WideToChar(GetShortLemma(), encoding) << " ";
     PrintGrammems(Grammems.All(), stream, encoding);
     stream << s << GetLabelsString(encoding);
 }

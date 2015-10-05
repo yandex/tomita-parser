@@ -31,7 +31,7 @@ protected:
     void AddVisitedPagesTable();
 
     Stroka EncodeText(const Wtroka& text) {
-        return NStr::Encode(text, Encoding);
+        return WideToChar(text, Encoding);
     }
 
 protected:

@@ -44,7 +44,7 @@ bool CStdinYandexDocsReader::GetNextDocInfo(Stroka& /*strFilePath*/, SDocumentAt
         bSuccess = file.ReadLine(CurrentLine);
         while (bSuccess && (attrs.m_strUrl == "" || CurrentLine != "")) {
             if (CurrentLine.find(DocTitleTag) == 0)
-                attrs.m_strTitle = NStr::Decode(CurrentLine.c_str() + strlen(DocTitleTag), Encoding);
+                attrs.m_strTitle = CharToWide(CurrentLine.c_str() + strlen(DocTitleTag), Encoding);
             else if (CurrentLine.find(DocUrlTag) == 0) {
                 attrs.m_strUrl = CurrentLine.c_str() + strlen(DocUrlTag);
                 size_t pos = attrs.m_strUrl.find('/');

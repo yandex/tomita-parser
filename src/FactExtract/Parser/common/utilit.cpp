@@ -65,7 +65,7 @@ void DecodeUserInput(const TStringBuf& text, Wtroka& res, ECharset encoding, con
 {
     const size_t MAX_MSG_TEXT_LEN = 250;
     try {
-        Decode(text, res, encoding);
+        CharToWide(text, res, encoding);
     } catch (...) {
         Cerr << "Cannot decode supplied text, invalid encoding (expected " << NameByCharset(encoding) << "):\n\n";
         if (text.size() <= MAX_MSG_TEXT_LEN)

@@ -42,24 +42,6 @@ void WriteToLogFile(const Stroka& sGrammarFileLog, Stroka& str, bool bRW = false
 // some string operations
 namespace NStr
 {
-    // default encoding/decoding (TODO: make adjustable via program option)
-    inline Wtroka Decode(const TStringBuf& str, ECharset encoding) {
-        return NDetail::Recode<char>(str, encoding);
-    }
-
-    inline Stroka Encode(const TWtringBuf& str, ECharset encoding) {
-        return NDetail::Recode<wchar16>(str, encoding);
-    }
-
-    // next two writes result directly into @res (using its buffer if any)
-    inline void Decode(const TStringBuf& str, Wtroka& res, ECharset encoding) {
-        ::CharToWide(str, res, encoding);
-    }
-
-    inline void Encode(const TWtringBuf& str, Stroka& res, ECharset encoding) {
-        ::WideToChar(str, res, encoding);
-    }
-
     // more careful decoding of user-supplied data
     void DecodeUserInput(const TStringBuf& text, Wtroka& res, ECharset encoding, const Stroka& filename = Stroka(), size_t linenum = 0);
     inline Wtroka DecodeUserInput(const TStringBuf& text, ECharset encoding, const Stroka& filename = Stroka(), size_t linenum = 0) {
@@ -70,21 +52,17 @@ namespace NStr
 
     // For aux_dic_kw.cxx parsing: currently only win-1251
     inline Wtroka DecodeAuxDic(const TStringBuf& str) {
-        return Decode(str, CODES_UTF8);
+        return CharToWide(str, CODES_UTF8);
     }
 
     // For tomita parsing: tomaparser recodes everything to utf-8
     inline Wtroka DecodeTomita(const TStringBuf& str) {
-        return Decode(str, CODES_UTF8);
+        return CharToWide(str, CODES_UTF8);
     }
-
-/*    inline Stroka EncodeRegex(const TWtringBuf& str) {
-        return Encode(str, CODES_WIN);
-    }*/
 
     // Default debug output encoding is win-1251, it nothing else specified
     inline Stroka DebugEncode(const TWtringBuf& str) {
-        return Encode(str, CODES_UTF8);
+        return WideToChar(str, CODES_UTF8);
     }
 
     size_t ReplaceChar(Stroka& str, char from, char to);
