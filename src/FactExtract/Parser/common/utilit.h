@@ -47,12 +47,9 @@ namespace NStr
         return WideToChar(str, CODES_UTF8);
     }
 
-    size_t ReplaceChar(Stroka& str, char from, char to);
     size_t ReplaceChar(Wtroka& str, wchar16 from, wchar16 to);
 
     size_t ReplaceSubstr(Wtroka& str, const TWtringBuf& from, const TWtringBuf& to);
-
-    size_t RemoveChar(Wtroka& str, wchar16 ch);
 
     // make first letter upper-cased (but not touch the rest ones)
     void ToFirstUpper(Wtroka& str);
