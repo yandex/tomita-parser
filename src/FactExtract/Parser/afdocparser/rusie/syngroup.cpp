@@ -1,6 +1,7 @@
 #include "syngroup.h"
 #include "primitivegroup.h"
 
+#include <FactExtract/Parser/common/utilit.h>
 #include <util/generic/cast.h>
 
 CGroup* CSynGroup::Clone() {

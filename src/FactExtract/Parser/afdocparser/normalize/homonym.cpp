@@ -1,5 +1,7 @@
 #include "homonym.h"
 
+#include <FactExtract/Parser/common/utilit.h>
+
 #include <FactExtract/Parser/inflectorlib/gramfeatures.h>
 #include <FactExtract/Parser/inflectorlib/numeral.h>
 

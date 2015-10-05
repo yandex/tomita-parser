@@ -1,4 +1,5 @@
 #include "word.h"
+#include <FactExtract/Parser/common/utilit.h>
 #include <FactExtract/Parser/afdocparser/common/wordsequence.h>
 #include <FactExtract/Parser/surname_predictor/surname_predictor.h>
 #include <FactExtract/Parser/afdocparser/rus/morph.h>

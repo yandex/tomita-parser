@@ -2,6 +2,7 @@
 #include "dateprocessor.h"
 #include "namefinder.h"
 
+#include <FactExtract/Parser/common/utilit.h>
 #include <util/generic/cast.h>
 
 

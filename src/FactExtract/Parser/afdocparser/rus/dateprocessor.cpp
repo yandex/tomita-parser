@@ -2,6 +2,7 @@
 #include <util/string/cast.h>
 #include <util/charset/unidata.h>
 #include <FactExtract/Parser/common/gramstr.h>
+#include <FactExtract/Parser/common/utilit.h>
 #include "dateprocessor.h"
 #include "wordvector.h"
 

@@ -1,4 +1,5 @@
 #include "homonym.h"
+#include <FactExtract/Parser/common/utilit.h>
 #include <FactExtract/Parser/afdocparser/common/wordsequence.h>
 #include <util/charset/recyr.hh>
 

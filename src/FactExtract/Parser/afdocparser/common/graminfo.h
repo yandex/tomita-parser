@@ -2,7 +2,6 @@
 
 #include <fstream>
 #include <FactExtract/Parser/common/wordhomonymnum.h>
-#include <FactExtract/Parser/common/utilit.h>
 #include <FactExtract/Parser/common/toma_constants.h>
 #include <FactExtract/Parser/common/gramstr.h>
 

@@ -18,6 +18,7 @@
 
 #include <FactExtract/Parser/common/toma_constants.h>
 #include <FactExtract/Parser/common/pathhelper.h>
+#include <FactExtract/Parser/common/utilit.h>
 #include <FactExtract/Parser/afglrparserlib/agreement.h>
 
 

@@ -3,7 +3,6 @@
 #include <util/generic/vector.h>
 #include <util/system/defaults.h>
 
-#include <FactExtract/Parser/common/utilit.h>
 #include <FactExtract/Parser/common/fact-types.h>
 #include <FactExtract/Parser/common/toma_constants.h>
 #include <FactExtract/Parser/common/serializers.h>

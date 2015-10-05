@@ -10,7 +10,6 @@
 
 #include "dictionary.h"
 #include "simplelist.h"
-#include <FactExtract/Parser/common/utilit.h>
 
 
 struct SArtFileAddress

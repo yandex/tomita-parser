@@ -3,6 +3,7 @@
 #include <util/generic/vector.h>
 #include <util/generic/set.h>
 
+#include <FactExtract/Parser/common/utilit.h>
 
 //required for bison - to make filling of vectors more convenient
 template<class TYPE>

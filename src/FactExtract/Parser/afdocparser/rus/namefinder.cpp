@@ -1,6 +1,8 @@
 #include "morph.h"
 #include "namefinder.h"
 
+#include <FactExtract/Parser/common/utilit.h>
+
 SNameTemplate g_FirmedNameTemplates[g_FirmedNameTemplatesCount] =
 {
     { {FirstName, Patronomyc}, 2, FIOname, true},
