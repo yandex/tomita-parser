@@ -1,5 +1,7 @@
 #include "primitivegroup.h"
 
+#include <FactExtract/Parser/common/utilit.h>
+
 
 void CPrimitiveGroup::SetActiveSymbol(int iS)
 {

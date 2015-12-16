@@ -1,5 +1,6 @@
 #include "namecluster.h"
 
+#include <FactExtract/Parser/common/utilit.h>
 #include <util/generic/algorithm.h>
 
 CNameCluster::CNameCluster()

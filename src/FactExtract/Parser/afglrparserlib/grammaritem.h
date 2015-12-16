@@ -5,7 +5,6 @@
 #include <util/generic/vector.h>
 
 #include <FactExtract/Parser/common/serializers.h>
-#include <FactExtract/Parser/common/utilit.h>
 #include "agreement.h"
 
 #include <library/lemmer/dictlib/grammarhelper.h>

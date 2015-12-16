@@ -3,7 +3,6 @@
 #include "doclistretrieverbase.h"
 #include "docstreambase.h"
 
-#include <FactExtract/Parser/common/utilit.h>
 #include <FactExtract/Parser/common/dateparser.h>
 #include <FactExtract/Parser/common/libxmlutil.h>
 

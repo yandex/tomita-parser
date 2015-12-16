@@ -1,6 +1,7 @@
 #pragma once
 
 #include <util/generic/vector.h>
+#include <FactExtract/Parser/common/utilit.h>
 #include "grammaritem.h"
 
 struct CWorkGrammar;

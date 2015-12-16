@@ -1478,7 +1478,7 @@ Stroka CCommonGrammarInterpretation::GetAgreementStr(const SRuleExternalInformat
             if (kwtype.GetKWType() != NULL /*EKWTypeCount*/)
                 Result += kwtype.GetKWType()->name();
             else
-                Result += NStr::Encode(kwtype.GetStrType(), encoding);
+                Result += WideToChar(kwtype.GetStrType(), encoding);
             Result += " ";
         }
         Result += "] ";

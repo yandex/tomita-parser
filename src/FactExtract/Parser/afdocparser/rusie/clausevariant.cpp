@@ -253,7 +253,7 @@ void CClauseVariant::Print(TOutputStream& stream, ECharset encoding) const
     int i = 0;
     for (; it !=  m_Clauses.end(); it++) {
         DECLARE_STATIC_RUS_WORD(kFragment, "Фрагмент № ");
-        stream << " " << NStr::Encode(kFragment, encoding) << i++ << Endl;
+        stream << " " << WideToChar(kFragment, encoding) << i++ << Endl;
         stream << " " << (*it)->ToString(true) << Endl;
         (*it)->Print(stream, encoding);
     }

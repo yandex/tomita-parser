@@ -2,6 +2,7 @@
 #include "graminfo.h"
 #include <FactExtract/Parser/common/string_tokenizer.h>
 #include <FactExtract/Parser/common/pathhelper.h>
+#include <FactExtract/Parser/common/utilit.h>
 #include <util/stream/file.h>
 #include <util/string/strip.h>
 

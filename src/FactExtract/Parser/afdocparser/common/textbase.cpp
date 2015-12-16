@@ -1,7 +1,7 @@
 #include "textbase.h"
 
 #include <util/charset/unidata.h>
-#include <util/charset/unidata.h>
+#include <util/string/util.h>
 
 static const ui32 MAX_WORD_LEN_N = 128;
 
@@ -236,7 +236,7 @@ void CTextBase::ProceedPrimGroups(const Wtroka& pText, int iFrom, int iSize)
 Wtroka CTextBase::GetText(const CPrimitive &prim) const
 {
     Wtroka str(m_strText.c_str() + prim.m_pos, prim.m_len);
-    NStr::RemoveChar(str, CTEXT_REM_SYMBOL);
+    RemoveAll(str, CTEXT_REM_SYMBOL);
     str = str.substr(0, MAX_WORD_LEN_N - 2);
     return str;
 }
@@ -245,7 +245,7 @@ void CTextBase::BuildPrimGroupText(const CPrimGroup &group, Wtroka& str) const
 {
     for (size_t i=0; i<group.m_prim.size(); i++) {
         Wtroka tmp(m_strText.c_str() + group.m_prim[i].m_pos, group.m_prim[i].m_len);
-        NStr::RemoveChar(tmp, CTEXT_REM_SYMBOL);
+        RemoveAll(tmp, CTEXT_REM_SYMBOL);
         str += tmp;
     }
 

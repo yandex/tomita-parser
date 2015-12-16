@@ -411,7 +411,7 @@ void CFactsCollection::GetAddressGeoAttrVal(const SDocumentAttribtes* docAttrs, 
             sTitle = docAttrs->m_strTitle;
         else
             NStr::Assign(sTitle, "no title");
-        sLeads = Substitute("$0\t$1\t$2\t", docAttrs->m_iDocID, sUrl, NStr::Encode(sTitle, encoding));
+        sLeads = Substitute("$0\t$1\t$2\t", docAttrs->m_iDocID, sUrl, WideToChar(sTitle, encoding));
         ymap<size_t, yvector<CWordsPair> >::const_iterator it_lead = vLeads.begin();
         for (; it_lead != vLeads.end(); it_lead++)
             sLeads += m_pText->GetSentence(it_lead->first)->ToHTMLColorString(it_lead->second, "red", encoding);
@@ -426,7 +426,7 @@ Stroka CFactsCollection::GetAddressGeoFieldVal(const CTextWS* pWS, ECharset enco
     Stroka s_tmp;
     for (size_t i = 0; i < pWS->GetLemmas().size(); ++i) {
         s_tmp += "_";
-        s_tmp += NStr::Encode(pWS->GetLemmas()[i].m_LemmaToShow, encoding);
+        s_tmp += WideToChar(pWS->GetLemmas()[i].m_LemmaToShow, encoding);
     }
 
     for (Stroka::iterator it = s_tmp.begin(); it != s_tmp.end(); ++it)
