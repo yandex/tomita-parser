@@ -17,6 +17,6 @@ before_script:
     - mkdir ${TRAVIS_BUILD_DIR}/build
     - cd ${TRAVIS_BUILD_DIR}/build
 script:
-    - cmake -DCMAKE_BUILD_TYPE=Release -DMAKE_ONLY=FactExtract/Parser/tomita-parser ${TRAVIS_BUILD_DIR}/src
+    - cmake -DCMAKE_BUILD_TYPE=Release ${TRAVIS_BUILD_DIR}/src
     - make
 
