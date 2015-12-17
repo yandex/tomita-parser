@@ -34,6 +34,8 @@ ELSE ()
     #
     # =========================================================================== #
 
+    SET(NOLINK yes)
+
     IF (MAKE_ONLY)
         SET(__to_make_)
         FOREACH(__item_ ${MAKE_ONLY})
