@@ -1,4 +1,3 @@
-# http://wiki.yandex-team.ru/PoiskovajaPlatforma/Build/MacrosAndVars
 SET(ROOT_PROJECTS
         bindings
         contrib

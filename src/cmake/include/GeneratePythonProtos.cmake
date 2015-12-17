@@ -56,7 +56,6 @@ ENDMACRO ()
 #
 # Create __init__.py files to make Python treat the directories as containing packages.
 # This is a bad macros. Try don't use this macro.
-# A better solution is presented on http://wiki.yandex-team.ru/JandeksPoisk/Fleur/Tech/PythonImports
 #
 MACRO(CREATE_INIT_PY)
     SET(__next_dest_)
