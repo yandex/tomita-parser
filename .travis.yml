@@ -9,8 +9,10 @@ addons:
         sources:
             - ubuntu-toolchain-r-test
         packages:
+            - cmake
             - gcc-4.8
             - g++-4.8
+            - lua5.2
 before_script:
     - mkdir ${TRAVIS_BUILD_DIR}/build
     - cd ${TRAVIS_BUILD_DIR}/build
