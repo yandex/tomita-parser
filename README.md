@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/the31k/tomita-parser.svg?branch=master)](https://travis-ci.org/the31k/tomita-parser)
+[![Travis](https://img.shields.io/travis/the31k/tomita-parser/master.svg?style=plastic)]()
 
 How to build?
 
