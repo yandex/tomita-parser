@@ -1,0 +1,22 @@
+language: c++
+sudo: false
+compiler:
+    - gcc
+install:
+    - export CXX="g++-4.8" CC="gcc-4.8"
+addons:
+    apt:
+        sources:
+            - ubuntu-toolchain-r-test
+        packages:
+            - cmake
+            - gcc-4.8
+            - g++-4.8
+            - lua5.2
+before_script:
+    - mkdir ${TRAVIS_BUILD_DIR}/build
+    - cd ${TRAVIS_BUILD_DIR}/build
+script:
+    - cmake -DCMAKE_BUILD_TYPE=Release -DMAKE_ONLY=FactExtract/Parser/tomita-parser ${TRAVIS_BUILD_DIR}/src
+    - make
+
