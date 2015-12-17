@@ -2,6 +2,7 @@
 #include <util/string/strip.h>
 #include <util/string/split_iterator.h>
 #include <kernel/gazetteer/common/serialize.h>
+#include <FactExtract/Parser/common/utilit.h>
 
 #include "grammaritem.h"
 

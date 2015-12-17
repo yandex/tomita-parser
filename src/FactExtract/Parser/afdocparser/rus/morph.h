@@ -7,6 +7,8 @@
 
 #include <util/system/tls.h>
 
+#include <library/lemmer/alpha/abc.h>
+
 #include <FactExtract/Parser/afdocparser/common/graminfo.h>
 #include <FactExtract/Parser/afdocparser/common/langdata.h>
 #include <FactExtract/Parser/afdocparser/rus/gleiche.h>

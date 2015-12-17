@@ -780,13 +780,13 @@ Stroka CTomitaItemsHolder::GetDumpOfWords(const CInputItem* item1, ECharset enco
     if (pPrimGroup) {
         TStringStream grammems_str;
         CHomonym::PrintGrammems(pPrimGroup->GetGrammems().All(), grammems_str, encoding);
-        return NStr::Encode(pPrimGroup->GetMainWord()->GetText(), encoding) + " " + grammems_str;
+        return WideToChar(pPrimGroup->GetMainWord()->GetText(), encoding) + " " + grammems_str;
     } else {
         const CFactSynGroup* pGroup = dynamic_cast<const CFactSynGroup*>(item1);
         if (pGroup) {
             TStringStream grammems_str;
             CHomonym::PrintGrammems(pGroup->GetGrammems().All(), grammems_str, encoding);
-            return Substitute("$0\\n$1\\n$2", NStr::Encode(pGroup->ToString(), encoding), grammems_str, pGroup->GetWeightStr());
+            return Substitute("$0\\n$1\\n$2", WideToChar(pGroup->ToString(), encoding), grammems_str, pGroup->GetWeightStr());
         } else
             return  " ";
     }
@@ -995,21 +995,21 @@ void CTomitaItemsHolder::PrintFlatRuleChild(TOutputStream &stream, const CGroup*
     }
 
     //stable part - word itself
-    stream << NStr::Encode(m_Words.GetWord(m_FDOChainWords[child->FirstWord()]).GetText(), CGramInfo::s_DebugEncoding);
+    stream << WideToChar(m_Words.GetWord(m_FDOChainWords[child->FirstWord()]).GetText(), CGramInfo::s_DebugEncoding);
     for (int w = child->FirstWord() + 1; w <= child->LastWord(); ++w)
-        stream << ' ' << NStr::Encode(m_Words.GetWord(m_FDOChainWords[w]).GetText(), CGramInfo::s_DebugEncoding);
+        stream << ' ' << WideToChar(m_Words.GetWord(m_FDOChainWords[w]).GetText(), CGramInfo::s_DebugEncoding);
 
     if (!is_primitive || verbose_primitives) {
         stream << ']';
 
         SArtPointer art = GramItem.GetPostfixKWType(DICT_KWTYPE);
-        Stroka KWYes = art.HasKWType() ? art.GetKWType()->name() : NStr::Encode(art.GetStrType(), CGramInfo::s_DebugEncoding);
+        Stroka KWYes = art.HasKWType() ? art.GetKWType()->name() : WideToChar(art.GetStrType(), CGramInfo::s_DebugEncoding);
 
         if (GramItem.IsNonePostfixKWType())
             KWYes = "none";
 
         art = GramItem.GetPostfixKWType(DICT_NOT_KWTYPE);
-        Stroka KWNo = art.HasKWType() ? art.GetKWType()->name() : NStr::Encode(art.GetStrType(), CGramInfo::s_DebugEncoding);
+        Stroka KWNo = art.HasKWType() ? art.GetKWType()->name() : WideToChar(art.GetStrType(), CGramInfo::s_DebugEncoding);
 
         if (!KWYes.empty() || !KWNo.empty()) {
             stream << "<kwt=" << KWYes;

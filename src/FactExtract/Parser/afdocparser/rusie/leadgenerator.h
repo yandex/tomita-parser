@@ -104,7 +104,7 @@ protected:
     Wtroka GeneratePureLeadText(SSentenceLead& sentenceLead, bool trim);
 
     Stroka EncodeText(const Wtroka& text) const {
-        return NStr::Encode(text, Encoding);
+        return WideToChar(text, Encoding);
     }
 
     const char* EncodingName() const {

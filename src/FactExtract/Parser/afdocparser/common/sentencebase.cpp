@@ -25,7 +25,7 @@ void CSentenceBase::PrintError(const Stroka& msg, const yexception* error)
     (*m_pErrorStream) << msg;
     if (error != NULL)
         (*m_pErrorStream) << ":\n\t" << error->what();
-    (*m_pErrorStream) << "\nin sentence:\n\t" << NStr::Encode(strSent, CGramInfo::s_DebugEncoding) << "\n";
+    (*m_pErrorStream) << "\nin sentence:\n\t" << WideToChar(strSent, CGramInfo::s_DebugEncoding) << "\n";
     m_pErrorStream->Flush();
 }
 
