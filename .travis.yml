@@ -1,4 +1,5 @@
 language: c++
+sudo: false
 compiler:
     - gcc
 install:
@@ -10,7 +11,10 @@ addons:
         packages:
             - gcc-4.8
             - g++-4.8
+before_script:
+    - mkdir ${TRAVIS_BUILD_DIR}/build
+    - cd ${TRAVIS_BUILD_DIR}/build
 script:
-    - cmake -DCMAKE_BUILD_TYPE=Release
+    - cmake -DCMAKE_BUILD_TYPE=Release ${TRAVIS_BUILD_DIR}/src
     - make
 
