@@ -26,15 +26,8 @@ ELSE ()
 
     INCLUDE(${CMAKE_SOURCE_DIR}/cmake/include/global.cmake NO_POLICY_SCOPE)
 
-    # =========================================================================== #
-    #
-    # MAKE_ONLY variable may contain reserved keyword "all" which means all
-    #   projects from ROOT_PROJECTS. For example, you may invoke cmake this way:
-    # cmake "-DMAKE_ONLY=all;ysite/pkg" ../arcadia
-    #
-    # =========================================================================== #
-
     SET(NOLINK yes)
+    SET(MAKE_ONLY "FactExtract/Parser/tomita-parser" CACHE INTERNAL "MAKE_ONLY")
 
     IF (MAKE_ONLY)
         SET(__to_make_)
