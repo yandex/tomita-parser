@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/the31k/tomita-parser.svg?branch=master)](https://travis-ci.org/the31k/tomita-parser)
+
 How to build?
 
 1. Install cmake 2.8, lua, gcc 4.8.1
