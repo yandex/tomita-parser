@@ -27,7 +27,7 @@ ELSE ()
     INCLUDE(${CMAKE_SOURCE_DIR}/cmake/include/global.cmake NO_POLICY_SCOPE)
 
     SET(NOLINK yes)
-    SET(MAKE_ONLY "FactExtract/Parser/tomita-parser" CACHE INTERNAL "MAKE_ONLY")
+    SET(MAKE_ONLY "FactExtract/Parser/tomita-parser" CACHE STRING "Targets to make")
 
     IF (MAKE_ONLY)
         SET(__to_make_)
