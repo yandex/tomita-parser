@@ -1057,7 +1057,9 @@ MACRO(GET_DEFAULT_UNIT_NAME result_var unit_type)
 ENDMACRO()
 
 MACRO (UNIT type)
-    IF (NOT ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION} MATCHES 2.8.12) # hook causes infinite loop in cmake 2.8.12
+    # hook causes infinite loop in cmake 2.8.12 and cmake 3.x
+    IF (NOT ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION} MATCHES 2.8.12
+        AND NOT ${CMAKE_MAJOR_VERSION} MATCHES 3)
         SETUP_EOF_HOOK()
     ENDIF ()
 
