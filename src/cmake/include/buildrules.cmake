@@ -1,5 +1,9 @@
 #This file contains macros which prepare variables and define macros used later in cmake-file
 
+CMAKE_POLICY(SET CMP0026 OLD)
+CMAKE_POLICY(SET CMP0045 OLD)
+CMAKE_POLICY(SET CMP0054 OLD)
+
 IF (NOT ARCADIA_ROOT)
     # At this stage it is absolutely mandatory to have this variable defined
     MESSAGE(FATAL_ERROR "ARCADIA_ROOT is not defined")
