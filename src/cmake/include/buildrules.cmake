@@ -1,8 +1,11 @@
 #This file contains macros which prepare variables and define macros used later in cmake-file
 
-CMAKE_POLICY(SET CMP0026 OLD)
-CMAKE_POLICY(SET CMP0045 OLD)
-CMAKE_POLICY(SET CMP0054 OLD)
+IF (${CMAKE_MAJOR_VERSION} GREATER 2)
+    CMAKE_POLICY(SET CMP0026 OLD)
+    CMAKE_POLICY(SET CMP0045 OLD)
+    CMAKE_POLICY(SET CMP0054 OLD)
+ENDIF ()
+
 
 IF (NOT ARCADIA_ROOT)
     # At this stage it is absolutely mandatory to have this variable defined
@@ -1059,7 +1062,7 @@ ENDMACRO()
 MACRO (UNIT type)
     # hook causes infinite loop in cmake 2.8.12 and cmake 3.x
     IF (NOT ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION} MATCHES 2.8.12
-        AND NOT ${CMAKE_MAJOR_VERSION} MATCHES 3)
+        AND NOT ${CMAKE_MAJOR_VERSION} EQUAL 3)
         SETUP_EOF_HOOK()
     ENDIF ()
 
