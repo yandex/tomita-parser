@@ -2,6 +2,7 @@ TOOL()
 
 NOUTIL()
 NO_COMPILER_WARNINGS()
+ADDINCLSELF()
 
 SRCS(
     src/AnnotationList.c
