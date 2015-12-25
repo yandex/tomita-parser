@@ -373,7 +373,7 @@ char * _STLP_CALL __write_formatted_time(char* buf, size_t buf_size, char format
         break;
       {
         int diff;
-#    if defined (__USE_BSD) || defined (__BEOS__)
+#    if defined(__USE_MISC) || defined (__USE_BSD) || defined (__BEOS__)
         diff = t->tm_gmtoff;
 #    else
         diff = t->__tm_gmtoff;
