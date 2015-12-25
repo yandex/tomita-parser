@@ -1,3 +1,5 @@
+[![Travis](https://img.shields.io/travis/yandex/tomita-parser/master.svg?style=plastic)](https://travis-ci.org/yandex/tomita-parser)
+
 How to build?
 
 1. Install cmake 2.8, lua, gcc 4.8.1
