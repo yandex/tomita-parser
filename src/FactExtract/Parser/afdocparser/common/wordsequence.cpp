@@ -3,6 +3,7 @@
 #include "wordsequence.h"
 #include "../rus/homonym.h"
 #include <FactExtract/Parser/common/string_tokenizer.h>
+#include <FactExtract/Parser/common/utilit.h>
 #include <util/charset/unidata.h>
 
 

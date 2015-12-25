@@ -1,5 +1,6 @@
 #include "wordvector.h"
 
+#include <FactExtract/Parser/common/utilit.h>
 #include <util/string/strip.h>
 
 

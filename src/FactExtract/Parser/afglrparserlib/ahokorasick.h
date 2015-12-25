@@ -4,7 +4,6 @@
 #include <util/generic/map.h>
 
 #include <FactExtract/Parser/common/serializers.h>
-#include <FactExtract/Parser/common/utilit.h>
 
 #include "commontypes.h"
 

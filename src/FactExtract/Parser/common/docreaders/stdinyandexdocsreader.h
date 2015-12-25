@@ -4,7 +4,6 @@
 #include "docstreambase.h"
 #include "agencyinforetriever.h"
 
-#include <FactExtract/Parser/common/utilit.h>
 #include <FactExtract/Parser/common/dateparser.h>
 
 #include <util/generic/stroka.h>

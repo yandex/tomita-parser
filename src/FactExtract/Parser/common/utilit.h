@@ -17,24 +17,6 @@ using ::google::protobuf::strings::Substitute;
 
 bool RequiresSpace(const Wtroka& w1, const Wtroka& w2);
 
-//  =============  Punctuation Letters ======================
-
-const ui8 Auml  = 196; // "Д"
-const ui8 auml  = 228; // "д"
-const ui8 Uuml  = 220; // "Ь"
-const ui8 uuml  = 252; // "ь"
-const ui8 Ouml  = 214; // "Ц"
-const ui8 ouml  = 246; // "ц"
-const ui8 szlig = 223; //"Я"
-const ui8 Nu    = 181;   // "ч"
-const ui8 agrave = 224; //"р"
-const ui8 egrave = 232; //"ш"
-const ui8 eacute = 233; //"щ"
-
-const ui8 LowerJO  = 0xB8;
-const ui8 UpperJO  = 0xA8;
-const ui8 Apostrophe  = 39;
-
 typedef enum { morphUnknown = 0, morphRussian = 1, morphEnglish = 2, morphGerman = 3 } MorphLanguageEnum;
 
 void WriteToLogFile(const Stroka& sGrammarFileLog, Stroka& str, bool bRW = false);
@@ -42,24 +24,6 @@ void WriteToLogFile(const Stroka& sGrammarFileLog, Stroka& str, bool bRW = false
 // some string operations
 namespace NStr
 {
-    // default encoding/decoding (TODO: make adjustable via program option)
-    inline Wtroka Decode(const TStringBuf& str, ECharset encoding) {
-        return NDetail::Recode<char>(str, encoding);
-    }
-
-    inline Stroka Encode(const TWtringBuf& str, ECharset encoding) {
-        return NDetail::Recode<wchar16>(str, encoding);
-    }
-
-    // next two writes result directly into @res (using its buffer if any)
-    inline void Decode(const TStringBuf& str, Wtroka& res, ECharset encoding) {
-        ::CharToWide(str, res, encoding);
-    }
-
-    inline void Encode(const TWtringBuf& str, Stroka& res, ECharset encoding) {
-        ::WideToChar(str, res, encoding);
-    }
-
     // more careful decoding of user-supplied data
     void DecodeUserInput(const TStringBuf& text, Wtroka& res, ECharset encoding, const Stroka& filename = Stroka(), size_t linenum = 0);
     inline Wtroka DecodeUserInput(const TStringBuf& text, ECharset encoding, const Stroka& filename = Stroka(), size_t linenum = 0) {
@@ -70,29 +34,22 @@ namespace NStr
 
     // For aux_dic_kw.cxx parsing: currently only win-1251
     inline Wtroka DecodeAuxDic(const TStringBuf& str) {
-        return Decode(str, CODES_UTF8);
+        return CharToWide(str, CODES_UTF8);
     }
 
     // For tomita parsing: tomaparser recodes everything to utf-8
     inline Wtroka DecodeTomita(const TStringBuf& str) {
-        return Decode(str, CODES_UTF8);
+        return CharToWide(str, CODES_UTF8);
     }
-
-/*    inline Stroka EncodeRegex(const TWtringBuf& str) {
-        return Encode(str, CODES_WIN);
-    }*/
 
     // Default debug output encoding is win-1251, it nothing else specified
     inline Stroka DebugEncode(const TWtringBuf& str) {
-        return Encode(str, CODES_UTF8);
+        return WideToChar(str, CODES_UTF8);
     }
 
-    size_t ReplaceChar(Stroka& str, char from, char to);
     size_t ReplaceChar(Wtroka& str, wchar16 from, wchar16 to);
 
     size_t ReplaceSubstr(Wtroka& str, const TWtringBuf& from, const TWtringBuf& to);
-
-    size_t RemoveChar(Wtroka& str, wchar16 ch);
 
     // make first letter upper-cased (but not touch the rest ones)
     void ToFirstUpper(Wtroka& str);

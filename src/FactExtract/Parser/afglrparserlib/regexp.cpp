@@ -1,5 +1,6 @@
 #include "agreement.h"
 
+#include <FactExtract/Parser/common/utilit.h>
 #include <util/charset/utf.h>
 #include <library/pire/pire.h>
 #include <library/pire/regexp.h>

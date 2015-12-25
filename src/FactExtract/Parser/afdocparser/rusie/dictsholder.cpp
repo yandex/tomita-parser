@@ -479,11 +479,11 @@ Stroka CDictsHolder::GetStrKWType(const CHomonym& h, ECharset encoding) const
     if (h.HasGztArticle()) {
         const TGztArticle& gzt_art = h.GetGztArticle();
         t = gzt_art.GetType();
-        title = NStr::Encode(gzt_art.GetTitle(), encoding);
+        title = WideToChar(gzt_art.GetTitle(), encoding);
     } else if (h.HasAuxArticle(KW_DICT)) {
         const article_t* art = GetAuxArticle(h, KW_DICT);
         t = art->get_kw_type();
-        title = NStr::Encode(art->get_title(), encoding);
+        title = WideToChar(art->get_title(), encoding);
     }
 
     Stroka res;

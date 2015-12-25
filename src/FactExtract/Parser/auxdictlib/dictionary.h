@@ -7,7 +7,6 @@
 #include <FactExtract/Parser/common/gramstr.h>
 #include <FactExtract/Parser/common/serializers.h>
 #include <FactExtract/Parser/common/fact-types.h>
-#include <FactExtract/Parser/common/utilit.h>
 
 #include <library/lemmer/dictlib/grammarhelper.h>
 #include <kernel/gazetteer/common/binaryguard.h>

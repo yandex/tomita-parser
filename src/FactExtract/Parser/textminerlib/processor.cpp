@@ -44,7 +44,7 @@ void CProcessor::InitInterviewFile(Stroka strNameFile)
 
         url = StripString(url);
         fio = StripString(fio);
-        InterviewUrl2Fio[ToString(url)] = NStr::Decode(ToString(fio), m_Parm.GetInputEncoding());
+        InterviewUrl2Fio[ToString(url)] = CharToWide(ToString(fio), m_Parm.GetInputEncoding());
     }
 }
 

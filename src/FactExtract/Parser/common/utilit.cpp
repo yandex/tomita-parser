@@ -65,7 +65,7 @@ void DecodeUserInput(const TStringBuf& text, Wtroka& res, ECharset encoding, con
 {
     const size_t MAX_MSG_TEXT_LEN = 250;
     try {
-        Decode(text, res, encoding);
+        CharToWide(text, res, encoding);
     } catch (...) {
         Cerr << "Cannot decode supplied text, invalid encoding (expected " << NameByCharset(encoding) << "):\n\n";
         if (text.size() <= MAX_MSG_TEXT_LEN)
@@ -85,11 +85,6 @@ void DecodeUserInput(const TStringBuf& text, Wtroka& res, ECharset encoding, con
 }
 
 
-size_t ReplaceChar(Stroka& str, char from, char to)
-{
-    return ReplaceCharTempl(str, from, to);
-}
-
 size_t ReplaceChar(Wtroka& str, wchar16 from, wchar16 to)
 {
     return ReplaceCharTempl(str, from, to);
@@ -107,22 +102,6 @@ size_t ReplaceSubstr(Wtroka& str, const TWtringBuf& from, const TWtringBuf& to)
         pos = str.off(TCharTraits<wchar16>::Find(~str + next, +str - next, ~from, +from));
     }
     return count;
-}
-
-size_t RemoveChar(Wtroka& str, wchar16 ch)
-{
-    for (size_t i = 0; i < str.size(); ++i)
-        if (str[i] == ch) {
-            wchar16* end = str.begin() + i;
-            for (wchar16* a = end + 1; a != str.end(); ++a)
-                if (*a != ch)
-                    *end++ = *a;
-
-            size_t removed = str.end() - end;
-            str.resize(str.size() - removed);
-            return removed;
-        }
-    return 0;
 }
 
 void ToFirstUpper(Wtroka& str)

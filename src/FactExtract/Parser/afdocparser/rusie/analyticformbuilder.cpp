@@ -1,5 +1,7 @@
 #include "analyticformbuilder.h"
 
+#include <FactExtract/Parser/common/utilit.h>
+
 CAnalyticFormBuilder::CAnalyticFormBuilder(CWordVector& Words, yvector<SWordHomonymNum>& clauseWords)
     : m_Words(Words)
     , m_ClauseWords(clauseWords)

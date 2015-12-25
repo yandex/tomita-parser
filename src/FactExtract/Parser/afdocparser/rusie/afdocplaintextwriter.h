@@ -31,7 +31,7 @@ protected:
     bool m_bAppend;
 
     Stroka EncodeText(const Wtroka& text) const {
-        return NStr::Encode(text, Encoding);
+        return WideToChar(text, Encoding);
     }
 
     Stroka GetWords(CWordSequence& wordsPair, CSentence* pSent);
