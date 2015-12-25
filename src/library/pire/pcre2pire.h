@@ -1,6 +1,6 @@
 #pragma once
 
-// Author: smikler@yandex-team.ru
+// Author: smikler@
 
 
 #include <util/generic/stroka.h>

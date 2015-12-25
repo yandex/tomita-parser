@@ -10,8 +10,6 @@
 
 #include <cstdio>
 
-// https://wiki.yandex-team.ru/Development/Poisk/arcadia/mbitmap
-
 const int bitmap_pagesize = 128*1024;
 struct bitmap_1 {
     yvector<ui32*> vect;
