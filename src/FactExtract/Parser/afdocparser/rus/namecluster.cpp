@@ -75,32 +75,34 @@ bool CNameCluster::order_by_fioIn(const CNameCluster& cluster2) const
 
 Wtroka CNameCluster::ToString() const
 {
-    Wtroka strRes;
-    NStr::Append(strRes, "\t{\n");
+    static const Wtroka TWO_TABS = CharToWide("\t\t");
+    static const Wtroka NEWLINE = CharToWide("\n");
+
+    Wtroka strRes = CharToWide("\t{\n");
     if (!m_FullName.m_strSurname.empty()) {
-        NStr::Append(strRes, "\t\t");
+        strRes += TWO_TABS;
         strRes += m_FullName.m_strSurname;
-        NStr::Append(strRes, "\n");
+        strRes += NEWLINE;
     }
     if (!m_FullName.m_strName.empty()) {
-        NStr::Append(strRes, "\t\t");
+        strRes += TWO_TABS;
         strRes += m_FullName.m_strName;
-        NStr::Append(strRes, "\n");
+        strRes += NEWLINE;
     }
     if (!m_FullName.m_strPatronomyc.empty()) {
-        NStr::Append(strRes, "\t\t");
+        strRes += TWO_TABS;
         strRes += m_FullName.m_strPatronomyc;
-        NStr::Append(strRes, "\n");
+        strRes += NEWLINE;
     }
 
-    NStr::Append(strRes, "\t\t");
+    strRes += TWO_TABS;
     yset<CFIOOccurenceInText>::const_iterator it = m_NameVariants.begin();
     for (; it != m_NameVariants.end(); ++it) {
         const CFIOOccurenceInText& fioWP = *it;
         Stroka strAddress = Substitute("$0[$1, $2] ", fioWP.GetSentNum(), fioWP.FirstWord(), fioWP.LastWord());
-        NStr::Append(strRes, strAddress.c_str());
+        strRes += CharToWide(strAddress);
     }
-    NStr::Append(strRes, "\n\t}");
+    strRes += CharToWide("\n\t}");
     return strRes;
 }
 

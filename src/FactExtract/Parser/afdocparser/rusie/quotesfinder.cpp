@@ -2,6 +2,8 @@
 #include "quotesfinder.h"
 #include "normalization.h"
 
+static const Wtroka COLON = Wtroka::FromAscii(":");
+
 
 CQuotesFinder::CQuotesFinder(yvector<CSentence*>& vecSentence, const TArticleRef& article)
     : m_vecSentence(vecSentence)
@@ -272,11 +274,12 @@ Wtroka CQuotesFinder::FindRightQuoteIfHas(const CWordsPair& PeriodToPrint, int S
     CSentenceRusProcessor* pSentPrc = GetSentPrc(SentNo);
     yset<int> QuoteWords;
     Wtroka ClauseStr;
+    static const Wtroka COMMA = Wtroka::FromAscii(",");
     for (int i = PeriodToPrint.FirstWord(); i <=  PeriodToPrint.LastWord(); i++) {
         const CWord& w = pSentPrc->m_Words.GetOriginalWord(i);
         if (!GroupToExclude.Contains(i) &&
-            !(GroupToExclude.Contains(i - 1) && NStr::IsEqual(w.GetText(), ",")) &&
-            !(GroupToExclude.Contains(i + 1) && NStr::IsEqual(w.GetText(), ","))) {
+            !(GroupToExclude.Contains(i - 1) && w.GetText() == COMMA) &&
+            !(GroupToExclude.Contains(i + 1) && w.GetText() == COMMA)) {
             ClauseStr += w.GetOriginalText() + ' ';
             QuoteWords.insert(i);
         }
@@ -344,7 +347,7 @@ bool CQuotesFinder::TryIndirectSpeech(const SValenciesValues& VerbCommunic, int 
         return false;
 
     // пропускаем непервые клаузы, которые заканчиваются на тире, поскольку, это может быть только прямая речь.
-    if ((**min_it).FirstWord() != 0 && NStr::IsEqual(pSentPrc->getWordRus((**min_it).LastWord())->GetText(), "-"))
+    if ((**min_it).FirstWord() != 0 && pSentPrc->getWordRus((**min_it).LastWord())->GetText() == Wtroka::FromAscii("-"))
         return false;
 
     // вычисляем союз по названию статьи, например, из "_глагол_со_чтобы" получаем "чтобы"
@@ -480,7 +483,7 @@ bool CQuotesFinder::FindCloseQuoteInNextSentences(int StartSentNo, int StartWord
                 }
                 bHasCloseQuote = true;
             }
-            if (NStr::IsEqual(w.GetText(), "\"")) {
+            if (w.GetText() == Wtroka::FromAscii("\"")) {
                 if (k+1 == (int)pSent->getWordsCount() || pSent->getWordRus(k+1)->IsPunct()) {
                     bHasCloseQuote = true;
                     Depth--;
@@ -494,7 +497,7 @@ bool CQuotesFinder::FindCloseQuoteInNextSentences(int StartSentNo, int StartWord
                 }
                 if (ResultToAdd.back() == ',' && Add.size() > 0 && NStr::IsLangAlpha(Add[0], TMorph::GetMainLanguage()) && ::IsUpper(Add[0])) {
                     ResultToAdd.erase(ResultToAdd.size() - 1);
-                    NStr::Append(ResultToAdd, ". ");
+                    ResultToAdd += CharToWide(". ");
                 }
 
                 ResultToAdd += Add;
@@ -533,7 +536,7 @@ bool CQuotesFinder::FindOpenQuoteInThisSentence(int SentNo, int DirectSpeechEndP
         const CWord& w = *pSent->getWordRus(k);
         if (w.HasCloseQuote())
             Depth--;
-        bool bHasOpenQuote = w.HasOpenQuote() || NStr::IsEqual(w.GetText(), ":\"");
+        bool bHasOpenQuote = w.HasOpenQuote() || w.GetText() == Wtroka::FromAscii(":\"");
         if (bHasOpenQuote)
             Depth++;
         if ((Depth == 0) && bHasOpenQuote) {
@@ -656,18 +659,18 @@ bool CQuotesFinder::TryDirectSpeechWithColon(const SValenciesValues& VerbCommuni
     CWordsPair QuoteValuePair;
     if (pEnclosedClause && pEnclosedClause->FirstWord() != 0) {
         const Wtroka& WordStr = pSentPrc->getWordRus(pEnclosedClause->FirstWord() - 1)->GetText();
-        if (!NStr::IsEqual(WordStr, ":") &&
-            (!NStr::IsEqual(WordStr, "\"") || pEnclosedClause->FirstWord() < 2 ||
-             !NStr::IsEqual(pSentPrc->getWordRus(pEnclosedClause->FirstWord() - 2)->GetText(), ":")))
+        if (WordStr != COLON &&
+            (WordStr != Wtroka::FromAscii("\"") || pEnclosedClause->FirstWord() < 2 ||
+             pSentPrc->getWordRus(pEnclosedClause->FirstWord() - 2)->GetText() != COLON))
             return false;
 
         QuoteValuePair = *pEnclosedClause;
     } else {
         int LastWord = (**min_it).LastWord();
         const Wtroka& WordStr = pSentPrc->getWordRus(LastWord)->GetText();
-        if (!NStr::IsEqual(WordStr, ":") &&
-            (!NStr::IsEqual(WordStr, "\"") || LastWord < 1 ||
-             !NStr::IsEqual(pSentPrc->getWordRus(LastWord - 1)->GetText(), ":")))
+        if (WordStr != COLON &&
+            (WordStr != Wtroka::FromAscii("\"") || LastWord < 1 ||
+             pSentPrc->getWordRus(LastWord - 1)->GetText() != COLON))
             return false;
 
         if (LastWord + 1 == (int)pSentPrc->getWordsCount())

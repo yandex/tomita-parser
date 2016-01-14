@@ -253,23 +253,23 @@ void CTextBase::BuildPrimGroupText(const CPrimGroup &group, Wtroka& str) const
 // we should proceed only ETypeOfPrim == 'Punct'
 // because 'Space' and 'Symbol' not affect anything
     if (m_bSourceIsHtml && group.m_str[0]=='&') {
-        if (NStr::IsEqual(str, "&quot;"))
-            NStr::Assign(str, "\"");
-        else if (NStr::IsEqual(str, "&apos;"))
-            NStr::Assign(str, "'");
-        else if (NStr::IsEqual(str, "&shy;"))
-            NStr::Assign(str, "-");
-        else if (NStr::IsEqual(str, "&laquo;"))
-            NStr::Assign(str, "\"");
-        else if (NStr::IsEqual(str, "&raquo;"))
-            NStr::Assign(str, "\"");
+        if (str == Wtroka::FromAscii("&quot;"))
+            str = CharToWide("\"");
+        else if (str == Wtroka::FromAscii("&apos;"))
+            str = CharToWide("'");
+        else if (str == Wtroka::FromAscii("&shy;"))
+            str = CharToWide("-");
+        else if (str == Wtroka::FromAscii("&laquo;"))
+            str = CharToWide("\"");
+        else if (str == Wtroka::FromAscii("&raquo;"))
+            str = CharToWide("\"");
     }
 
     static const Wtroka shy = CharToWide("&shy;");
     NStr::ReplaceSubstr(str, shy, Wtroka());
 
     if (group.m_gtyp==Punct && group.m_break==WordBreak)
-        NStr::Assign(str, " ");
+        str = CharToWide(" ");
 
     if (str.size() >= MAX_WORD_LEN_N)
         str = group.m_str.substr(0, MAX_WORD_LEN_N - 2);
@@ -608,19 +608,19 @@ size_t CTextBase::queryHtmlEscSeq(CPrimGroup &group,size_t from)
         return 0;
 
     Wtroka tmp = GetText(m_vecPrimitive[from]);
-    if (NStr::IsEqual(tmp, "nbsp")  || NStr::IsEqual(tmp, "160")) {
+    if (tmp == Wtroka::FromAscii("nbsp") || tmp == Wtroka::FromAscii("160")) {
         group.m_gtyp = Space;
         appendPrimitivesToPrimGroup(group, from, from + 2);
         return 2;
-    } else if (NStr::IsEqual(tmp, "shy")) {
+    } else if (tmp == Wtroka::FromAscii("shy")) {
         group.m_gtyp = Punct;
         appendPrimitivesToPrimGroup(group, from, from + 2);
         return 2;
-    } else if (NStr::IsEqual(tmp, "apos") || NStr::IsEqual(tmp, "quot")) {
+    } else if (tmp == Wtroka::FromAscii("apos") || tmp == Wtroka::FromAscii("quot")) {
         group.m_gtyp = Punct;
         appendPrimitivesToPrimGroup(group, from, from + 2);
         return 2;
-    } else if (NStr::IsEqual(tmp, "laquo") || NStr::IsEqual(tmp, "raquo")) {
+    } else if (tmp == Wtroka::FromAscii("laquo") || tmp == Wtroka::FromAscii("raquo")) {
         group.m_gtyp = Punct;
         appendPrimitivesToPrimGroup(group, from, from + 2);
         return 2;
@@ -1301,7 +1301,7 @@ size_t CTextBase::queryWordShyGroup(CPrimGroup &group,size_t from)
     if (from + 3 < m_vecPrimitive.size() &&
         m_strText[m_vecPrimitive[from].m_pos] == '&' &&
         m_strText[m_vecPrimitive[from + 2].m_pos] == ';' &&
-        NStr::IsEqual(GetText(m_vecPrimitive[from + 1]), "shy")) {
+        GetText(m_vecPrimitive[from + 1]) == Wtroka::FromAscii("shy")) {
         group.m_gtyp = WordShy;
         appendPrimitivesToPrimGroup(group, from, from + 4);
         return 4;

@@ -410,7 +410,7 @@ void CFactsCollection::GetAddressGeoAttrVal(const SDocumentAttribtes* docAttrs, 
         if (!docAttrs->m_strTitle.empty())
             sTitle = docAttrs->m_strTitle;
         else
-            NStr::Assign(sTitle, "no title");
+            sTitle = CharToWide("no title");
         sLeads = Substitute("$0\t$1\t$2\t", docAttrs->m_iDocID, sUrl, WideToChar(sTitle, encoding));
         ymap<size_t, yvector<CWordsPair> >::const_iterator it_lead = vLeads.begin();
         for (; it_lead != vLeads.end(); it_lead++)

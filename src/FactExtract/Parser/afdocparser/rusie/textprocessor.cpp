@@ -87,7 +87,7 @@ bool CTextProcessor::ShouldRunFramentation(CSentence& sent)
     for (size_t i = 0; i < sent.m_words.size(); i++) {
         CWord& w = *sent.m_words[i];
         if (w.m_typ == Punct) {
-            if (NStr::IsEqual(w.GetText(), "|"))
+            if (w.GetText() == Wtroka::FromAscii("|"))
                 iBadPunctCount++;
             if (w.GetText()[0] == 0x00A6)
                 iBadPunctCount++;
@@ -393,9 +393,9 @@ void CTextProcessor::SerializeFacts(yvector<TPair<Stroka, ymap<Stroka, Wtroka> >
                 case BoolField:
                     {
                         if (fact.GetBoolValue(fieldDescr.m_strFieldName))
-                            NStr::Assign(newFact.second[fieldDescr.m_strFieldName], "1");
+                            newFact.second[fieldDescr.m_strFieldName] = CharToWide("1");
                         else
-                            NStr::Assign(newFact.second[fieldDescr.m_strFieldName], "0");
+                            newFact.second[fieldDescr.m_strFieldName] = CharToWide("0");
                         break;
                     }
 

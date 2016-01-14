@@ -47,43 +47,10 @@ namespace NStr
         return WideToChar(str, CODES_UTF8);
     }
 
-    size_t ReplaceChar(Wtroka& str, wchar16 from, wchar16 to);
-
     size_t ReplaceSubstr(Wtroka& str, const TWtringBuf& from, const TWtringBuf& to);
 
     // make first letter upper-cased (but not touch the rest ones)
     void ToFirstUpper(Wtroka& str);
-
-    inline bool IsAsciiChar(char c) {
-        return static_cast<ui8>(c) <= 0x7F;
-    }
-
-    inline bool IsAsciiString(const char* first) {
-        for (; *first != 0; ++first)
-            if (!IsAsciiChar(*first))
-                return false;
-        return true;
-    }
-
-    inline bool IsEqual(const TWtringBuf& str, const char* ascii) {
-        YASSERT(IsAsciiString(ascii));
-        const ui16* cur = str.begin();
-        for (; cur != str.end() && *ascii != 0; ++cur, ++ascii)
-            if (*cur != static_cast<ui8>(*ascii))
-                return false;
-        return cur == str.end() && *ascii == 0;
-    }
-
-    inline void Append(Wtroka& str, const char* ascii) {
-        YASSERT(IsAsciiString(ascii));
-        for (; *ascii != 0; ++ascii)
-            str.append(static_cast<ui8>(*ascii));
-    }
-
-    inline void Assign(Wtroka& str, const char* ascii) {
-        str.clear();
-        NStr::Append(str, ascii);
-    }
 
     // case-insensitive operator==
     inline bool EqualCi(const Stroka& s1, const Stroka& s2) {

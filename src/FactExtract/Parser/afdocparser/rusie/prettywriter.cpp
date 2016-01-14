@@ -110,7 +110,7 @@ void CPrettyWriter::AddFactTable(const CFactFields& fact, int iSent, Stroka strU
 
 void CPrettyWriter::AddCellValue(TXmlNodePtrBase piCell, Wtroka strVal, Stroka strRef)
 {
-    NStr::ReplaceChar(strVal, '\"', ' ');
+    SubstGlobal(strVal, ASCIIToWide("\""), ASCIIToWide(" "));
     strVal = StripString(strVal);
 
     piCell.AddAttr("val", strVal);

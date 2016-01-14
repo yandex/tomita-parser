@@ -676,7 +676,7 @@ bool CWorkGrammar::AugmentGrammar(yvector<CRuleAgreement>& Agreements)
 
     //  adding a special symbol (end of input)
     I.m_ItemStrId = END_OF_INPUT;
-    NStr::Assign(I.m_Lemma, END_OF_INPUT.c_str());
+    I.m_Lemma = CharToWide(END_OF_INPUT);
     I.m_Type = siString;
     m_UniqueGrammarItems.push_back(I);
 

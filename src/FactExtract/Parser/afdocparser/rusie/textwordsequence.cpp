@@ -77,7 +77,7 @@ Wtroka CTextWS::GetMainWordsDump() const
     }
 
     for (yvector<Wtroka>::const_iterator it = m_MainWords.begin(); it != m_MainWords.end(); ++it) {
-        if (NStr::IsEqual(*it, "&"))
+        if (*it == Wtroka::FromAscii("&"))
             ythrow yexception() << "seems to be obsolete";
         else {
             Result += *it;
