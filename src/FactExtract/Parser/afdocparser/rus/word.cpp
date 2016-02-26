@@ -89,7 +89,7 @@ void CWord::AddFio(yset<Wtroka>& fioStrings, bool bIndexed)
 
 bool CWord::IsEndOfStreamWord() const
 {
-    return m_typ == UnknownPrim && NStr::IsEqual(m_txt, "EOS");
+    return m_typ == UnknownPrim && m_txt == Wtroka::FromAscii("EOS");
 }
 
 void CWord::UniteHomonymsTerminalSymbols()

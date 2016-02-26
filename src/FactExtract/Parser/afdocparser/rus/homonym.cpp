@@ -260,7 +260,7 @@ Wtroka CHomonym::GetShortLemma() const
     Wtroka s = GetLemma();
     if (s.size() > 30) {
         s = s.substr(0, 30);
-        NStr::Append(s , "...");
+        s += CharToWide("...");
     }
     return s;
 }

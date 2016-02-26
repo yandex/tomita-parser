@@ -271,7 +271,7 @@ bool CLeadGenerator::AddToSentencePeriods(const CFactFields& fact, const fact_ty
 
             if (field_descr.m_Field_type == TextField) {
                 newWp.m_strCapitalizedName = pWS->GetCapitalizedLemma();
-                NStr::ReplaceChar(newWp.m_strCapitalizedName, '\"', ' ');
+                SubstGlobal(newWp.m_strCapitalizedName, ASCIIToWide("\""), ASCIIToWide(" "));
                 newWp.m_strCapitalizedName = StripString(newWp.m_strCapitalizedName);
             }
 

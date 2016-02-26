@@ -39,7 +39,7 @@ void CPrettySitWriter::AddSituationTable(TXmlNodePtrBase piSent, CSentence* pSen
         TXmlNodePtr piVal("val");
         piVal.AddAttr("val_name", v.m_strVal);
         Wtroka strWord = pSent->m_Words.GetWord(v.m_Value).GetOriginalText();
-        NStr::ReplaceChar(strWord, '_', ' ');
+        SubstGlobal(strWord, ASCIIToWide("_"), ASCIIToWide(" "));
         piVal.AddAttr("val_value", strWord);
         piSit.AddChild(piVal);
     }

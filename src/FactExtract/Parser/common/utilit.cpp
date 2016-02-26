@@ -42,22 +42,6 @@ void WriteToLogFile(const Stroka& sGrammarFileLog, Stroka& str, bool bRW)
     out.Write(str.c_str());
 };
 
-template <typename TStr>
-static size_t ReplaceCharTempl(TStr& str, typename TStr::char_type from, typename TStr::char_type to)
-{
-    size_t count = 0;
-    for (size_t i = 0; i < str.size(); ++i)
-        if (str[i] == from) {
-            for (typename TStr::char_type* a = str.begin() + i; a != str.end(); ++a)
-                if (*a == from) {
-                    *a = to;
-                    ++count;
-                }
-            break;
-        }
-    return count;
-}
-
 namespace NStr
 {
 
@@ -84,11 +68,6 @@ void DecodeUserInput(const TStringBuf& text, Wtroka& res, ECharset encoding, con
     }
 }
 
-
-size_t ReplaceChar(Wtroka& str, wchar16 from, wchar16 to)
-{
-    return ReplaceCharTempl(str, from, to);
-}
 
 size_t ReplaceSubstr(Wtroka& str, const TWtringBuf& from, const TWtringBuf& to)
 {

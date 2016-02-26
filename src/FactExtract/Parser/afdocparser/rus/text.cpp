@@ -180,7 +180,7 @@ bool CText::processHyphenOrComplexGroupAsNumberAndFlex(CWord* pWord, CPrimGroup&
             return false;
     } else if (group.m_prim.size() == 4) {
         // 40%-niy
-        if (!(group.m_prim[1].m_typ == Symbol && NStr::IsEqual(GetText(group.m_prim[1]), "%") &&
+        if (!(group.m_prim[1].m_typ == Symbol && GetText(group.m_prim[1]) == Wtroka::FromAscii("%") &&
               isPunctHyphen(group.m_prim[2])))
             return false;
     } else if (group.m_prim.size() != 2 || group.m_gtyp != Complex) // 5ya
@@ -364,7 +364,7 @@ bool CText::IsSurname(const Wtroka& pText)
 CSentence* CText::BuildOneSentence(const Wtroka& pText)
 {
     Wtroka strText = pText;
-    NStr::ReplaceChar(strText, '-', ' ');
+    SubstGlobal(strText, ASCIIToWide("-"), ASCIIToWide(" "));
 
     ProceedPrimGroups(strText, 0, strText.size());
     CSentence* pRes = (CSentence*)createSentence(0, m_vecPrimGroup.size());

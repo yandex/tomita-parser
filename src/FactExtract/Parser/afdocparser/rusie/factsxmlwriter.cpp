@@ -6,7 +6,7 @@
 Wtroka CFactsWriterBase::GetWords(const CTextWS& wordsPair) const
 {
     Wtroka res = wordsPair.GetLemma();
-    NStr::ReplaceChar(res, '\"', ' ');
+    SubstGlobal(res, ASCIIToWide("\""), ASCIIToWide(" "));
     TMorph::ToUpper(res);
 
     TWtringBuf tmp = StripString(TWtringBuf(res));

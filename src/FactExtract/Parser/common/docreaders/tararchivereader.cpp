@@ -72,7 +72,7 @@ bool CTarArchiveReader::GetNextDocInfo(Stroka& strFilePath, SDocumentAttribtes& 
 
     attrs.m_iDocID = 0;
     attrs.m_strSource = "undefined";
-    NStr::Assign(attrs.m_strTitle, "undefined");
+    attrs.m_strTitle = CharToWide("undefined");
     attrs.m_strUrl = strFilePath; //= "undefined";
 
     return true;
