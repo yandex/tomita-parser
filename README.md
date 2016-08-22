@@ -20,4 +20,4 @@ The following packages should be installed before compiling on an `x86_64` machi
 * `lua`,
 * `libstdc++-static`.
 
-Please note that the `glibc-devel.i686` package should be either removed or not installed (see yandex/tomita-parser#6 for details). In case when the requirements are met, everything will work fine. it has been tested and so far has worked successfully on Fedora 20 (x86_64).
+Please note that the `glibc-devel.i686` package should be either removed or not installed (see yandex/tomita-parser#6 for details). In case when the requirements are met, everything will work fine. it has been tested and so far has worked successfully on Fedora 20 (x86_64) and Fedora 24 (x86_64).
