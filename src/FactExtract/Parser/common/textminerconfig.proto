@@ -89,6 +89,14 @@ message TTextMinerConfig {
     required string Name = 1;
     optional bool NonEquality = 2 [default = false];
   }
+
+  enum EBastardMode {
+    no = 0;               // Не использовать предиктивную морфологию для несловарных слов.
+    outOfDict = 1;        // Использовать предиктивную морфологию, если нет ни одного словарного разбора.
+                          // Если словарные разборы есть, то гипотезы, построенные предиктивной морфологией
+                          // ("бастарды"), использованы не будут.
+    always = 2;           // Всегда добавлять гипотезы, сгенерированные предиктивной морфологией
+  }
     
   required string Dictionary = 1;
   // Может быть папкой, тогда парсер будет работать в режиме совместимости со старыми путями
@@ -142,4 +150,7 @@ message TTextMinerConfig {
 
   optional bool UseOldLemmer = 20 [default = false];
   // Использовать старый леммер Яндекса
+
+  optional EBastardMode BastardMode = 21 [default = no];
+  // Как поступать со словами, которых нет в словаре
 }

@@ -1,0 +1,9 @@
+import "base.proto";
+import "facttypes_base.proto";
+
+message SVO: NFactType.TFact 
+{
+    required string S = 1;
+    required string V = 2;
+    required string O = 3;
+}

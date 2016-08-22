@@ -364,15 +364,22 @@ bool TMorph::GetHomonyms(const Wtroka& word, THomonymBaseVector& dict_homs, bool
     predicted_homs.clear();
     TWLemmaArray lemmas;
     FindAllLemmas(word, lemmas);
-    for (size_t i = 0; i < lemmas.size(); ++i) {
-        bool predicted = IsBastard(lemmas[i]);
-        THomonymBasePtr pH = YandexLemmaToHomonym(lemmas[i], !predicted).Get();
-        if (predicted)
-            predicted_homs.push_back(pH);
-        else
-            dict_homs.push_back(pH);
 
+    for (size_t i = 0; i < lemmas.size(); ++i) {
+         bool predicted = IsBastard(lemmas[i]);
+         THomonymBasePtr pH = YandexLemmaToHomonym(lemmas[i], !predicted).Get();
+         if (predicted)
+             predicted_homs.push_back(pH);
+         else
+             dict_homs.push_back(pH);
     }
+  
+    if (Singleton<TMorph>()->GramInfo->s_BastardMode == EBastardMode::Always ||
+        (Singleton<TMorph>()->GramInfo->s_BastardMode == EBastardMode::OutOfDict && dict_homs.size() == 0)) {
+        dict_homs.insert(dict_homs.end(), predicted_homs.begin(), predicted_homs.end());
+        predicted_homs.clear();
+    }
+
     if (dict_homs.empty() && bUsePrediction) {
         THomonymBasePtr pH = CreateHomonym();
         pH->InitText(word, false);

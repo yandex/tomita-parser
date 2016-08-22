@@ -254,6 +254,25 @@ Stroka CCommonParm::GetOutputFormat() const {
    return Stroka("xml");
 }
 
+CCommonParm::EBastardMode CCommonParm::GetBastardMode() const {
+    if (NULL != Config.Get() && Config->has_bastardmode())
+        switch (Config->GetBastardMode()) {
+            case TTextMinerConfig::no:
+                return CCommonParm::EBastardMode::no;
+
+            case TTextMinerConfig::outOfDict:
+                return CCommonParm::EBastardMode::outOfDict;
+
+            case TTextMinerConfig::always:
+                return CCommonParm::EBastardMode::always;
+
+            default:
+                ythrow yexception() << "This bastard mode isn't supported";
+        }
+
+    return CCommonParm::EBastardMode::no;  
+}
+
 int CCommonParm::GetFirstUnloadDocNum() const {
     if (NULL != Config.Get() && Config->has_input() && Config->input().has_firstdocnum())
         return Config->input().GetFirstDocNum();

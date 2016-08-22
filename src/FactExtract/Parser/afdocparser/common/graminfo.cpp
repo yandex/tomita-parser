@@ -135,6 +135,8 @@ bool CGramInfo::s_bRunSituationSearcher = false;
 bool CGramInfo::s_bForceRecompile = false;
 size_t CGramInfo::s_maxFactsCount = 64;
 
+EBastardMode CGramInfo::s_BastardMode = EBastardMode::No;
+
 bool CGramInfo::s_bDebugProtobuf = false;
 TOutputStream* CGramInfo::s_PrintRulesStream = NULL;
 TOutputStream* CGramInfo::s_PrintGLRLogStream = NULL;

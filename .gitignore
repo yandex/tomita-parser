@@ -1,0 +1,16 @@
+build/
+src/.idea/
+src/FactExtract/Parser/afdocparser/rusie/facts/facts
+src/FactExtract/Parser/afglrparserlib/afglrparserlib
+src/FactExtract/Parser/geo_hierarchy/geo_hierarchy
+src/FactExtract/Parser/inflectorlib/inflectorlib
+src/FactExtract/Parser/tomalanglib/tomalanglib
+src/contrib/libs/libexslt/libexslt
+src/contrib/libs/protobuf/protoc/protoc
+src/contrib/tools/bison/bison/bison
+src/contrib/tools/bison/m4/m4
+src/contrib/tools/flex-old/flex-old
+src/contrib/tools/protoc/protoc
+src/library/archive/archive
+src/library/pire/pire
+src/library/xsltransform/xsltransform

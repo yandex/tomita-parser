@@ -1,0 +1,10 @@
+encoding "utf8";
+
+import "base.proto";     
+import "articles_base.proto";
+
+import "facttypes.proto";
+
+TAuxDicArticle "Пример" {
+    key = { "tomita:gram.cxx" type=CUSTOM }
+}

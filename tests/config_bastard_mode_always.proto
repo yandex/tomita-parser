@@ -1,0 +1,27 @@
+encoding "utf8";
+
+TTextMinerConfig {
+  Dictionary = "bastard_mode//dic.gzt";
+  
+  //PrettyOutput = "debug.html";
+  //PrintTree = "tree.txt";
+  //PrintRules = "rules.txt";
+
+  Input = {
+    File = "bastard_mode//text.txt";
+  }
+
+  Articles = [
+    { Name = "Пример" }
+  ]
+
+  Facts = [
+    { Name = "SVO" }
+  ]
+
+  Output = {
+    Format = text;
+  }
+
+  BastardMode=always;
+}

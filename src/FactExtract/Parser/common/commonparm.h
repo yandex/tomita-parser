@@ -74,6 +74,9 @@ public:
         return ParserOptions.Get();
     }
 
+    enum EBastardMode { no = 0, outOfDict = 1, always = 2 };
+    virtual EBastardMode GetBastardMode() const;
+
 protected:
     Stroka m_strInputFileName;
     Stroka m_strSourceType;
