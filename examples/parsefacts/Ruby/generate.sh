@@ -1,2 +1,2 @@
 #!/bin/sh
-protoc -I ../C++ --proto_path=../ --beefcake_out . ../C++/facts.proto
+protoc -I ../ --proto_path=../ --beefcake_out . ../facts.proto
