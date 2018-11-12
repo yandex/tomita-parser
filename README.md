@@ -13,7 +13,7 @@ How to build?
 
 ## Ubuntu
 
-1. sudo apt-get install build-essential cmake lua5.2
+1. sudo apt-get install build-essential cmake lua5.2 libbison-dev
 2. git clone https://github.com/yandex/tomita-parser
 3. cd tomita-parser && mkdir build && cd build
 4. cmake ../src/ -DCMAKE_BUILD_TYPE=Release
