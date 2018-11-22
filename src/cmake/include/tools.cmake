@@ -358,6 +358,9 @@ IF (GCC_FULLLIBDIR)
             ${THREADLIB}
         )
 
+        IF (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 6.0)
+            SET_APPEND(ST_OBJADDE -no-pie)
+        ENDIF()
 
         IF(NOT USE_ARCADIA_LIBM)
             SET_APPEND(ST_OBJADDE -lm)

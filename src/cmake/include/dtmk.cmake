@@ -157,7 +157,13 @@ ELSE ()
         SET(__debug_info_flag_ "")
     ENDIF ()
 
-    SET(CMAKE_C_FLAGS            "-pipe ${__debug_info_flag_} -Wall -W -Wno-parentheses -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DGNU")
+    IF (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 6.0)
+        SET(__pie_gcc_flag_ "-fno-pie")
+    ELSE()
+        SET(__pie_gcc_flag_ "")
+    ENDIF()
+
+    SET(CMAKE_C_FLAGS            "-pipe ${__debug_info_flag_} -Wall ${__pie_gcc_flag_} -W -Wno-parentheses -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DGNU")
     SET(CMAKE_CXX_FLAGS          "${CMAKE_C_FLAGS} -Woverloaded-virtual")
 
     SET(CMAKE_CXX_FLAGS_RELEASE  "-O2 -DNDEBUG ${CFLAGS_RELEASE}")
