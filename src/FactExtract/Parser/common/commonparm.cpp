@@ -26,15 +26,23 @@ NLastGetopt::TEasySetup MakeTomitaParserOpts() {
 
     opts.SetTitle(Stroka("Yandex Tomita-parser ") + GetProgramVersionTag() + ". Open-source edition.\nhttp://api.yandex.ru/tomita");
 
-    return opts; 
+    return opts;
 }
 
 CCommonParm::CCommonParm() {
-    m_strSourceType = "no";
+    m_strSourceType = "memory";
 }
 
 CCommonParm::~CCommonParm() {
     ParserOptions.Release();
+}
+
+const char* CCommonParm::getConfigDir() {
+    return m_confDir;
+}
+
+void CCommonParm::setConfigDir(const char* confDir) {
+    m_confDir = confDir;
 }
 
 bool CCommonParm::InitParameters() {
@@ -270,7 +278,7 @@ CCommonParm::EBastardMode CCommonParm::GetBastardMode() const {
                 ythrow yexception() << "This bastard mode isn't supported";
         }
 
-    return CCommonParm::EBastardMode::no;  
+    return CCommonParm::EBastardMode::no;
 }
 
 int CCommonParm::GetFirstUnloadDocNum() const {
@@ -392,7 +400,10 @@ Stroka CCommonParm::GetInterviewUrl2FioFileName() const {
     return Stroka("");
 }
 
-bool CCommonParm::ParseConfig(const Stroka& fn) {
+bool CCommonParm::ParseConfig(const Stroka& path) {
+    Stroka fn(m_confDir);
+    fn.append(path);
+
     Config.Reset(NProtoConf::LoadFromFile<TTextMinerConfig>(fn));
     if (!Config)
         ythrow yexception() << "Cannot read the config from \"" << fn << "\".";
@@ -424,7 +435,8 @@ bool CCommonParm::ParseConfig(const Stroka& fn) {
 
             m_strSourceType = "dir";
             m_strInputFileName = inputParams.dir();
-            m_strDocDir = inputParams.dir();
+            m_strDocDir = Stroka(m_confDir);
+            m_strDocDir.append(inputParams.dir());
             if (!PathHelper::IsDir(m_strDocDir))
                 ythrow yexception() << "\"" << m_strDocDir << "\" isn't a directory";
         } else {
@@ -468,7 +480,7 @@ bool CCommonParm::ParseConfig(const Stroka& fn) {
                         ythrow yexception() << "This type of input isn't supported";
                 }
             } else
-                m_strSourceType = "no";
+                m_strSourceType = "memory";
         }
     }
 
@@ -486,4 +498,3 @@ void CCommonParm::AnalizeParameter(const TStringBuf& name, const TStringBuf& val
 
     paramName.to_lower();
 }
-

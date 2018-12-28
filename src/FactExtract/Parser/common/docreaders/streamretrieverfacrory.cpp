@@ -2,6 +2,7 @@
 #include <util/string/strip.h>
 #include "streamretrieverfacrory.h"
 #include "tararchivereader.h"
+#include "memoryreader.h"
 
 
 CStreamRetrieverFactory::CStreamRetrieverFactory()
@@ -95,6 +96,13 @@ bool CStreamRetrieverFactory::CreateDirStreamRetriever(const CCommonParm& parm) 
     return m_pDocListRetrieverFromDisc->Init(parm.GetDocDir());
 }
 
+bool CStreamRetrieverFactory::CreateMemoryStreamRetriever(const CCommonParm& parm) {
+    m_memoryReader.Reset(new CMemoryReader());
+    m_sourceType = Memory;
+    m_memoryReader->m_Date = parm.GetDate();
+    return true;
+}
+
 bool CStreamRetrieverFactory::CreateStreamRetriever(const CCommonParm& parm)
 {
     yset<int> unloadDocNums;
@@ -135,6 +143,9 @@ bool CStreamRetrieverFactory::CreateStreamRetriever(const CCommonParm& parm)
     else if ("dir" == parm.GetSourceType())
         return CreateDirStreamRetriever(parm);
 
+    else if ("memory" == parm.GetSourceType())
+        return CreateMemoryStreamRetriever(parm);
+
     else
         ythrow yexception() << "Unknown source type \"" << parm.GetSourceType() << "\".";
 }
@@ -159,6 +170,9 @@ CDocListRetrieverBase& CStreamRetrieverFactory::GetDocRetriever()
 
         case OneDocSource:
             return *m_pOneDocReader;
+
+        case Memory:
+            return *m_memoryReader;
 
         //case UndefSource:
         default:
@@ -187,6 +201,9 @@ CDocStreamBase& CStreamRetrieverFactory::GetDocStream()
 
         case OneDocSource:
             return *m_pOneDocReader;
+
+        case Memory:
+            return *m_memoryReader;
 
         //case UndefSource:
         default:

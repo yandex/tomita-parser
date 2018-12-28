@@ -27,10 +27,11 @@ typedef yvector<THomonymPtr> THomonymVector;
 
 class TMorph
 {
+public:
+    TMorph();
 private:
     // can only be created as singleton
     DECLARE_SINGLETON_FRIEND(TMorph)
-    TMorph();
 
 public:
     static void SetMainLanguage(docLanguage lang);

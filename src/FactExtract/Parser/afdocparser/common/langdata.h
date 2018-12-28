@@ -22,6 +22,9 @@ typedef ymap<Wtroka, ETypeOfAbbrev> TMapAbbrev;
 
 class CLangData {
 public:
+    CLangData() {
+    }
+
     inline bool HasAbbrev(const Wtroka& text, ETypeOfAbbrev& type) const {
         if (Abbrev.Get() == NULL)
             return false;
@@ -43,9 +46,6 @@ public:
 private:
     // can only be created as singleton
     DECLARE_SINGLETON_FRIEND(CLangData)
-
-    CLangData() {
-    }
 
     static void LoadFileAbbrev(TMapAbbrev& abbrev, const Stroka& path, ECharset encoding);
     static void LoadWordsWithPoint(yset<Wtroka>& words, const Stroka& path, ECharset encoding);

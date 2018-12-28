@@ -70,6 +70,7 @@ class CFactsXMLWriter: public CSimpleXMLWriter, protected CFactsWriterBase
 {
 public:
     CFactsXMLWriter(const CParserOptions::COutputOptions& parserOutputOptions, Stroka path, ECharset encoding);
+    CFactsXMLWriter(const CParserOptions::COutputOptions& parserOutputOptions, TOutputStream* outStream, ECharset encoding);
     CFactsXMLWriter(const CParserOptions::COutputOptions& parserOutputOptions, Stroka path, ECharset encoding, bool bReload, bool bAppend = false);
     CFactsXMLWriter(const CParserOptions::COutputOptions& parserOutputOptions, TOutputStream* outStream, ECharset encoding, bool bReload, bool bAppend = false);
 

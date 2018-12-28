@@ -130,6 +130,13 @@ CFactsXMLWriter::CFactsXMLWriter(const CParserOptions::COutputOptions& parserOut
 {
 }
 
+CFactsXMLWriter::CFactsXMLWriter(const CParserOptions::COutputOptions& parserOutputOptions, TOutputStream* outStream, ECharset encoding)
+    : CSimpleXMLWriter(outStream, "fdo_objects", encoding, Stroka("<fdo_objects>"), false)
+    , CFactsWriterBase(parserOutputOptions)
+    , m_pErrorStream(&Cerr)
+{
+}
+
 void CFactsXMLWriter::PutWriteLeads(bool b) {
     IsWriteLeads = b;
 }

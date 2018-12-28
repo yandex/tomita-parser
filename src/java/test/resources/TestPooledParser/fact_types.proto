@@ -1,0 +1,36 @@
+import "base.proto";
+import "facttypes_base.proto";
+
+message Repair: NFactType.TFact
+
+    {
+	optional string Word = 1;
+	optional string Verb = 2;
+	optional string AdjGroup = 3;
+	optional string Label = 4;
+    }
+
+message Features: NFactType.TFact
+    {
+	optional string WarmFloor = 1;
+	optional string FloorCoveringOrdinar = 2;
+	optional string FloorCoveringExcellent = 3;
+	optional string TileFinish = 4;
+	optional string Equipment = 5;
+	optional string Ceiling = 6;
+	optional string Conditioners = 7;
+	optional string Windows = 8;
+	optional string Sanitary = 9;
+	optional string Materials = 10;
+	optional string MetalDoor = 11;
+	optional string Tie = 12;
+	optional string Plaster = 13;
+	optional string Radiators = 14;
+	optional string Wallpaper = 15;
+	optional string Quality = 16;
+    }
+
+message Labels: NFactType.TFact
+    {
+	optional string Label = 1;
+    }

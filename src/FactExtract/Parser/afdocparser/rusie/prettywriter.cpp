@@ -351,4 +351,3 @@ void CPrettyWriter::SaveToFile(const Stroka& name)
 
     xmlFree(buff);
 }
-

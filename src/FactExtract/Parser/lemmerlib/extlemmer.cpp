@@ -40,14 +40,8 @@ TGrammarFiltr* GetNewDummyGrammarFiltr(const char* grammar);
 TSimpleLemmer::TSimpleLemmer(const Stroka& path) {
     Stroka libPath = path;
     if (path.length() == 0) {
-        Stroka prgDir = GetProgramDir();
-        if ((prgDir.length() > 1 && prgDir[1] == ':') || (prgDir.length() > 0 && prgDir[0] == '/'))
-            libPath = prgDir;
-        else
-            libPath = GetCwd() + Stroka("/") + prgDir;
         SlashFolderLocal(libPath);
         libPath += Stroka("libmystem_c_binding.so");
-        //Cerr << "libPath == " << libPath << Endl;
     }
 
     Lib.Open(~libPath, RTLD_NOW | RTLD_DEEPBIND | RTLD_NODELETE);

@@ -1,0 +1,24 @@
+encoding "utf8";
+
+TTextMinerConfig {
+
+  Dictionary = "dict.gzt";
+
+
+  //Input = {
+      //Dir = "/home/sonador/srg/9r/baikal-repair-classification/src/main/resources/tomitaInput";
+      //File = "/home/sonador/srg/9r/baikal-repair-classification/src/main/resources/info.txt"
+  //}
+
+  Articles = [
+      { Name = "repair" }
+      { Name = "features" }
+      { Name = "labels" }
+  ]
+
+  Facts = [
+      { Name = "Repair" }
+      { Name = "Features" }
+      { Name = "Labels" }
+  ]
+}

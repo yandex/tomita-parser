@@ -1,0 +1,19 @@
+encoding "utf8";
+
+TTextMinerConfig {
+
+  Dictionary = "dict.gzt";
+
+  Articles = [
+      { Name = "repair" }
+      { Name = "features" }
+      { Name = "labels" }
+  ]
+
+  Facts = [
+      { Name = "Repair" }
+      { Name = "Features" }
+      { Name = "Labels" }
+  ]
+}
+
