@@ -2,6 +2,8 @@ language: c++
 sudo: false
 compiler:
     - gcc
+before_install:
+  - sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 762E3157
 install:
     - export CXX="g++-4.8" CC="gcc-4.8"
 addons:
