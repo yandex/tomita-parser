@@ -46,6 +46,7 @@ namespace NPire {
         using Pire::Features::GlueSimilarGlyphs;
         using Pire::Features::AndNotSupport;
         using Pire::Features::Capture;
+        using Pire::Features::EnableUnicodeSequences;
     }
 
     namespace NEncodings {

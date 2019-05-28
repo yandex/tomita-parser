@@ -43,6 +43,7 @@ TRegexMatcher::TRegexMatcher(const TWtringBuf& pattern) {
     }
 
     NPire::TLexer lexer(final.begin(), final.end());
+    lexer.AddFeature(NPire::NFeatures::EnableUnicodeSequences());
     lexer.SetEncoding(NPire::NEncodings::Utf8());
     NPire::TFsm fsm = lexer.Parse();
     if (surround)
@@ -58,6 +59,7 @@ TRegexMatcher::~TRegexMatcher() {
 bool TRegexMatcher::IsCompatible(const TWtringBuf& pattern) {
     try {
         NPire::TLexer lexer(pattern.begin(), pattern.end());
+        lexer.AddFeature(NPire::NFeatures::EnableUnicodeSequences());
         lexer.Parse();
         return true;
     } catch (...) {

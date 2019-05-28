@@ -15,6 +15,7 @@ SRCS(
     extra/capture.cpp
     extra/count.cpp
     extra/glyphs.cpp
+    extra/unicode_support.cpp
     re_lexer.cpp
     re_parser.y
     extraencodings.cpp
