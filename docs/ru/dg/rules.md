@@ -68,7 +68,7 @@
 > 
 > Это правило аналогично следующему:
 > 
-> `Adjectives —> Adj<gnc—agr[1]> Adj<gnc—agr[1]>+;`
+> `Adjectives —> Adj<gnc—agr[1]> Adj<gnc—agr[1]>*;`
 
 ### Символы в правой части правила
 
