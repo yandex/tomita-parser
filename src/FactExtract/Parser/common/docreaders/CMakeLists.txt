@@ -24,6 +24,7 @@ SRCS(
     agencyinforetriever.cpp
     stdinmapreducedocsreader.cpp
     somreader.cpp
+    memoryreader.cpp
 )
 
 END()

@@ -1,0 +1,86 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'com.jfrog.artifactory'
+apply plugin: "nebula.ospackage"
+apply plugin: 'idea'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'commons-io', name: 'commons-io', version: '2.6'
+    testCompile 'com.opencsv:opencsv:3.9'
+}
+
+buildDir = "build/java"
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/java/main/java']
+        }
+        resources {
+            srcDirs = ['src/java/main/resources']
+        }
+    }
+
+    test {
+        java {
+            srcDirs = ['src/java/test/java']
+        }
+        resources {
+            srcDirs = ['src/java/test/resources']
+        }
+    }
+}
+
+task generateNativeHeaders(type:Exec) {
+    def classpath = sourceSets.main.output.classesDir
+    def nativeIncludes = "src/FactExtract/Parser/textminerlib_java/generated"
+    commandLine "javah", "-d", nativeIncludes, "-classpath", classpath, "com.srg.tomita.TomitaParserInternal"
+
+    dependsOn classes
+}
+
+task buildTomita(type:Exec) {
+    commandLine 'sh', './tomita_build.sh'
+}
+
+build {
+    dependsOn buildTomita
+}
+
+buildDeb {
+    dependsOn build
+}
+
+def absoluteLibPath = projectDir.absolutePath + "/lib"
+def absoluteBuildLibPath = projectDir.absolutePath + "/build/lib"
+
+test {
+    environment "LD_LIBRARY_PATH", absoluteLibPath + ":" + absoluteBuildLibPath
+}
+
+def installLibPrefix = "/usr/lib"
+def sharedLibInternalPath = "build/lib"
+def providedLibInternalPath = "lib"
+
+ospackage {
+    arch = "amd64"
+    user = "baikal"
+    permissionGroup = "baikal"
+
+    into(installLibPrefix) {
+        from(sharedLibInternalPath)
+        fileMode 0644
+    }
+
+    into(installLibPrefix) {
+        from(providedLibInternalPath)
+        fileMode 0644
+    }
+}

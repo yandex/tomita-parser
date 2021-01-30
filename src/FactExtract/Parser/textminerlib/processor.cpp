@@ -67,11 +67,11 @@ bool CProcessor::Init(int argc, char* argv[])
 
         ParserOptionsPtr.Reset(m_Parm.GetParserOptions());
 
-        Stroka dicDir;
-        if (!m_Parm.GetGramRoot().empty())
-            dicDir = m_Parm.GetGramRoot();
-        else {
-            dicDir = m_Parm.GetDicDir();
+        Stroka dicDir(m_Parm.getConfigDir());
+        if (!m_Parm.GetGramRoot().empty()) {
+            dicDir.append(m_Parm.GetGramRoot());
+        } else {
+            dicDir.append(m_Parm.GetDicDir());
             PathHelper::AppendSlash(dicDir);
         }
 
@@ -134,7 +134,7 @@ bool CProcessor::Init(int argc, char* argv[])
 void CProcessor::InitOutput(const CCommonParm& params)
 {
     if ("xml" == params.GetOutputFormat()) {
-        XmlWriter.Reset(new CFactsXMLWriter(ParserOptionsPtr->m_ParserOutputOptions, params.GetOutputFileName(), params.GetOutputEncoding(), "yarchive" == params.GetSourceType(), params.IsAppendFdo()));
+        XmlWriter.Reset(new CFactsXMLWriter(ParserOptionsPtr->m_ParserOutputOptions, m_OutStream, params.GetOutputEncoding(), "yarchive" == params.GetSourceType(), params.IsAppendFdo()));
 
         XmlWriter->SetErrorStream(Errors);
         XmlWriter->PutWriteLeads(m_Parm.IsWriteLeads());
@@ -210,12 +210,16 @@ Wtroka CProcessor::GetInterviewFio(Stroka strUrl) const
 bool CProcessor::Run()
 {
     try {
+        XmlWriter->Start();
+
         StartTime = time(&StartTime);
         WriteInformation("Start.");
 
         TextMiner->Run();
 
         WriteInformation("End.");
+
+        XmlWriter->Finish();
 
         if (PrettyXMLWriter.Get() != NULL)
             PrettyXMLWriter->SaveToFile(m_Parm.GetPrettyOutputFileName());

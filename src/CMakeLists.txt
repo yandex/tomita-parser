@@ -10,6 +10,15 @@ SET(ROOT_PROJECTS
         util
 )
 
+find_package(JNI)
+
+IF (JNI_FOUND)
+    MESSAGE ( STATUS "JNI_INCLUDE_DIRS=${JNI_INCLUDE_DIRS}" )
+    MESSAGE ( STATUS "JNI_LIBRARIES=${JNI_LIBRARIES}" )
+ELSE ()
+    MESSAGE ( FATAL_ERROR "Failed to locate JNI headers. Check the jdk installation path." )
+ENDIF ()
+
 IF (YMAKE)
     IF (ARC)
         ARCPLUGINS(

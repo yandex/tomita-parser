@@ -7,6 +7,7 @@ CSimpleXMLWriter::CSimpleXMLWriter(Stroka path, Stroka strRoot, ECharset encodin
     : m_ActiveOutput(NULL)
     , Encoding(encoding)
     , m_bAppend(false)
+    , m_finished(false)
 {
     Open(path, strRoot, Stroka("<") + strRoot + ">", false);
 }
@@ -16,6 +17,7 @@ CSimpleXMLWriter::CSimpleXMLWriter(Stroka path, Stroka strRoot, ECharset encodin
     : m_ActiveOutput(NULL)
     , Encoding(encoding)
     , m_bAppend(false)
+    , m_finished(false)
 {
     Open(path, strRoot, strFirstTag, bAppend);
 }
@@ -25,8 +27,9 @@ CSimpleXMLWriter::CSimpleXMLWriter(TOutputStream* outStream, Stroka strRoot, ECh
     : m_ActiveOutput(outStream)
     , Encoding(encoding)
     , m_bAppend(false)
+    , m_finished(true)
 {
-    Open("mapreduce", strRoot, strFirstTag, bAppend);
+    Open("stream", strRoot, strFirstTag, bAppend);
 }
 
 void CSimpleXMLWriter::Open(Stroka path, Stroka strRoot, Stroka strFirstTag, bool bAppend)
@@ -37,7 +40,7 @@ void CSimpleXMLWriter::Open(Stroka path, Stroka strRoot, Stroka strFirstTag, boo
 
     if (path == "stdout" || path == "-" || path.empty())
         m_ActiveOutput = &Cout;
-    else if (path != "mapreduce") {
+    else if (path != "mapreduce" && path != "stream") {
         bFileExists = isexist(path.c_str());
 
         ui32 mode = WrOnly | Seq;
@@ -56,15 +59,20 @@ void CSimpleXMLWriter::Open(Stroka path, Stroka strRoot, Stroka strFirstTag, boo
 
     YASSERT(m_ActiveOutput != NULL);
 
-    if (!bAppend || !bFileExists) {
-        *m_ActiveOutput << "<?xml version='1.0' encoding='" << EncodingName() << "'?>";
-        *m_ActiveOutput << strFirstTag;
-    }
-
     m_piDoc.Reset("1.0");
     m_piDoc.SetEncoding(Encoding);
     m_piRoot = m_piDoc.AddNewChild(strRoot.c_str());
     m_piRoot.ClearChildren();
+}
+
+void CSimpleXMLWriter::Start()
+{
+    if (m_finished)
+    {
+        *m_ActiveOutput << "<?xml version='1.0' encoding='" << EncodingName() << "'?>";
+        *m_ActiveOutput << "<" << m_strRoot << ">";
+        m_finished = false;
+    }
 }
 
 CSimpleXMLWriter& CSimpleXMLWriter::operator<<(const char* s)
@@ -96,8 +104,16 @@ void CSimpleXMLWriter::SaveSubTree()
     SaveSubTreeToStream(*m_ActiveOutput);
 }
 
+void CSimpleXMLWriter::Finish()
+{
+    if (!m_finished) {
+        *m_ActiveOutput << "</" << m_strRoot << ">";
+        m_finished = true;
+    }
+}
+
 CSimpleXMLWriter::~CSimpleXMLWriter()
 {
     if (m_ActiveOutput != NULL && !m_bAppend)
-        *m_ActiveOutput << "</" << m_strRoot << ">";
+        Finish();
 }

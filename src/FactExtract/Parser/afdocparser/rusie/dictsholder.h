@@ -34,9 +34,9 @@ class CDictsHolder: public CGramInfo
 private:
      // can only be created as singleton
     DECLARE_SINGLETON_FRIEND(CDictsHolder)
-    CDictsHolder();
 
 public:
+  CDictsHolder();
 
   virtual void Init(const Stroka& strDicPath, const Stroka& strBinPath = "");
   void InitFragmDics();

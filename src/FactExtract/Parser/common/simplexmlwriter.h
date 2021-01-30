@@ -18,6 +18,9 @@ public:
     inline xmlDocPtr GetXMLDoc() { return m_piDoc.Get(); };
     inline TXmlNodePtrBase GetXMLRoot() { return m_piRoot; };
 
+    void Start();
+    void Finish();
+
     CSimpleXMLWriter& operator<<(const Stroka& s);
     CSimpleXMLWriter& operator<<(const char* s);
 
@@ -48,4 +51,5 @@ private:
     Stroka m_strRoot;
     TMutex m_SaveStringCS;
     bool m_bAppend;
+    bool m_finished;
 };

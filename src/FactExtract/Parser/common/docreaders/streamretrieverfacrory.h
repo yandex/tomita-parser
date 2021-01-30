@@ -10,6 +10,7 @@
 #include "docstreamdisc.h"
 #include "somreader.h"
 #include "onedocreader.h"
+#include "memoryreader.h"
 
 #include <FactExtract/Parser/common/commonparm.h>
 
@@ -17,7 +18,7 @@
 
 class CTarArchiveReader;
 
-enum EDocSourceType { SrcFilesSource, XMLFileSource, MDFFileSource, MDFXMLFileSource, YandexArchive, OldBaseSource, StdinYandexDocsSource, TarArchive, StdinDocPerLineSource, StdinMapReduceSource, SomSource, OneDocSource, UndefSource };
+enum EDocSourceType { SrcFilesSource, XMLFileSource, MDFFileSource, MDFXMLFileSource, YandexArchive, OldBaseSource, StdinYandexDocsSource, TarArchive, StdinDocPerLineSource, StdinMapReduceSource, SomSource, OneDocSource, UndefSource, Memory };
 
 class CStreamRetrieverFactory
 {
@@ -31,6 +32,7 @@ public:
     CDocStreamBase& GetDocStream();
 
     inline EDocSourceType GetSourceType();
+    THolder<CMemoryReader> m_memoryReader;
 private:
     DECLARE_NOCOPY(CStreamRetrieverFactory);
 
@@ -56,6 +58,7 @@ private:
     bool CreateOneDocStreamRetriever(const CCommonParm& parm);
     bool CreateMapreduceStreamRetriever(const CCommonParm& parm);
     bool CreateDirStreamRetriever(const CCommonParm& parm);
+    bool CreateMemoryStreamRetriever(const CCommonParm& parm);
 
 };
 

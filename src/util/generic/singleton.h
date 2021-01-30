@@ -70,11 +70,18 @@ namespace NPrivate {
 #define DECLARE_SINGLETON_FRIEND(T) friend T* ::NPrivate::SingletonInt<T, TSingletonTraits<T >::Priority>();
 
 template <class T>
-T* Singleton() {
+T* Singleton(T* value = NULL) {
     static T* ret;
+    static thread_local T* local_ret;
 
-    if (EXPECT_FALSE(!ret)) {
+    if (value) {
+        local_ret = value;
+    } else if (EXPECT_FALSE(!ret)) {
         ret = ::NPrivate::SingletonInt<T, TSingletonTraits<T>::Priority>();
+    }
+
+    if (local_ret != NULL) {
+        return local_ret;
     }
 
     return ret;

@@ -1,0 +1,19 @@
+encoding "utf8";
+
+import "fact_types.proto";
+
+TAuxDicArticle "repair"
+{
+  key = { "tomita:repair.cxx" type=CUSTOM }
+}
+
+TAuxDicArticle "features"
+{
+  key = { "tomita:features.cxx" type=CUSTOM }
+}
+
+TAuxDicArticle "labels"
+{
+  key = { "tomita:labels.cxx" type=CUSTOM }
+}
+

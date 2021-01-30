@@ -18,6 +18,9 @@ public:
     CCommonParm();
     ~CCommonParm();
 
+    const char* getConfigDir();
+    void setConfigDir(const char* confDir);
+
     virtual bool AnalizeParameters(int argc, char *argv[]);
     virtual void AnalizeParameter(const TStringBuf& paramName, const TStringBuf& paramValue);
     virtual bool InitParameters();
@@ -92,6 +95,7 @@ protected:
     THolder<TTextMinerConfig> Config;
 
     Stroka m_strConfig;
+    const char* m_confDir;
 
     bool ParseConfig(const Stroka& fn);
 };

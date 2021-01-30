@@ -26,6 +26,10 @@ public:
 
     void WriteInformation(const Stroka& s);
     CCommonParm m_Parm;
+    TOutputStream* m_OutStream;
+    CStreamRetrieverFactory Factory;
+
+protected:
 
 private:
     void InitOutput(const CCommonParm& params);
@@ -50,7 +54,6 @@ private:
 
     TMutex InputLock, OutputLock;
 
-    CStreamRetrieverFactory Factory;
     CDocListRetrieverBase* Retriever;
     CDocStreamBase* DocStream;
     CDocBody DocBody;
